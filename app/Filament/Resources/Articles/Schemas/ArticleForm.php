@@ -43,6 +43,8 @@ class ArticleForm
 
                 RichEditor::make('content')
                     ->required()
+                    ->fileAttachmentsDirectory('articles/content')
+                    ->fileAttachmentsVisibility('public')
                     ->columnSpanFull(),
 
                 Toggle::make('is_published')

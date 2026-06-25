@@ -365,7 +365,7 @@
 <script>
 (function() {
     // Register articleEditor BEFORE Alpine starts — use document.addEventListener('alpine:init')
-    // @entangle works here because Livewire compiles this Blade view first
+    // @@entangle works here because Livewire compiles this Blade view first
     function registerArticleEditor() {
         if (typeof Alpine === 'undefined') {
             setTimeout(registerArticleEditor, 50);

@@ -105,15 +105,28 @@ class ArticleSeeder extends Seeder
             ],
         ];
 
+        $categories = \App\Models\Category::all();
         foreach ($articles as $article) {
+            $cat = $categories->random() ?? \App\Models\Category::first();
+            $words = str_word_count(strip_tags($article['content']));
             Article::updateOrCreate(
                 ['slug' => Str::slug($article['title'])],
                 [
                     'title' => $article['title'],
                     'content' => $article['content'],
+                    'summary' => Str::limit(strip_tags($article['content']), 150),
                     'image' => $article['image'],
+                    'status' => 'published',
+                    'tags' => ['Hukum', 'Edukasi', 'Bisnis'],
                     'is_published' => $article['is_published'],
                     'published_at' => $article['published_at'],
+                    'category_id' => $cat->id,
+                    'meta_title' => $article['title'],
+                    'meta_description' => Str::limit(strip_tags($article['content']), 150),
+                    'focus_keyword' => 'hukum',
+                    'canonical_url' => 'https://narasumberhukum.com/artikel/' . Str::slug($article['title']),
+                    'seo_score' => 85,
+                    'readability_score' => $words > 100 ? 'Good' : 'Poor',
                 ]
             );
         }

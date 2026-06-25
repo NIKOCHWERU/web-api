@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,14 +17,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Seed categories
+        $categories = ['Teknologi', 'Hukum', 'Bisnis', 'Layanan', 'Lainnya'];
+        foreach ($categories as $cat) {
+            Category::firstOrCreate(
+                ['slug' => Str::slug($cat)],
+                ['name' => $cat]
+            );
+        }
 
-        User::firstOrCreate([
-            'email' => 'admin@admin.com',
-        ], [
-            'name' => 'Admin',
-            'password' => bcrypt('password'),
-        ]);
+        // Seed admin user
+        User::firstOrCreate(
+            ['email' => 'niko.narasumberhukum@gmail.com'],
+            [
+                'name' => 'Niko Admin',
+                'password' => bcrypt('password123'),
+                'role' => 'admin',
+            ]
+        );
 
         $this->call([
             ArticleSeeder::class,

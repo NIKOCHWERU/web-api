@@ -48,6 +48,7 @@
                     <tr>
                         <th class="px-6 py-4 font-medium">Article</th>
                         <th class="px-6 py-4 font-medium">Category</th>
+                        <th class="px-6 py-4 font-medium">Author</th>
                         <th class="px-6 py-4 font-medium">Status</th>
                         <th class="px-6 py-4 font-medium">Last Updated</th>
                         <th class="px-6 py-4 font-medium text-right">Actions</th>
@@ -72,6 +73,16 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">{{ $article->category?->name ?? '-' }}</td>
+                            <td class="px-6 py-4">
+                                @if($article->author)
+                                    <div class="flex items-center gap-2">
+                                        <img src="{{ $article->author->profile_photo_url }}" class="w-6 h-6 rounded-full object-cover">
+                                        <span class="text-sm text-gray-300">{{ $article->author->name }}</span>
+                                    </div>
+                                @else
+                                    <span class="text-gray-500">-</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4">
                                 @if($article->status === 'published')
                                     <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Published</span>

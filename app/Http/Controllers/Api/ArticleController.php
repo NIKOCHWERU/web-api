@@ -10,7 +10,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        return Article::with('category')
+        return Article::with(['category', 'author'])
             ->where('is_published', true)
             ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
@@ -19,9 +19,13 @@ class ArticleController extends Controller
 
     public function show($slug)
     {
-        return Article::with('category')
+        $article = Article::with(['category', 'author'])
             ->where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
+            
+        $article->increment('views');
+        
+        return $article;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\ActivityLog;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -22,6 +23,7 @@ class Dashboard extends Component
             'recentArticles'    => Article::with('category')->orderByDesc('views')->latest()->take(5)->get(),
             'topArticles'       => Article::where('status','published')->orderByDesc('views')->take(5)->get(),
             'recentContacts'    => Contact::latest()->take(5)->get(),
+            'recentActivities'  => ActivityLog::with('user')->latest()->take(10)->get(),
         ])->layout('layouts.admin');
     }
 }

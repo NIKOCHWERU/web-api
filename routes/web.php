@@ -32,8 +32,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/articles/create',               ArticleEditor::class)->name('articles.create');
         Route::get('/articles/{article}/edit',       ArticleEditor::class)->name('articles.edit');
         Route::get('/categories',                    CategoryManager::class)->name('categories.index');
-        Route::get('/users',                         UserManager::class)->name('users.index');
-        Route::get('/contacts',                      ContactManager::class)->name('contacts.index');
+        Route::get('/users',                         \App\Livewire\Admin\Users\UserManager::class)->name('users.index');
+        Route::get('/contacts',                      \App\Livewire\Admin\Contacts\ContactManager::class)->name('contacts.index');
+        Route::get('/profile',                       \App\Livewire\Admin\Profile\ProfileManager::class)->name('profile');
     });
 });
 

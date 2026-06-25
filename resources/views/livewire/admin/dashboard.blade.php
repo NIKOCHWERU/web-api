@@ -56,6 +56,52 @@
         </div>
     </div>
 
+    <!-- Chart & Activity Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <!-- Traffic Chart -->
+        <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-5 shadow-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-sm font-semibold text-white">Views Traffic (Top Articles)</h2>
+            </div>
+            <div id="trafficChart" class="w-full h-72"></div>
+        </div>
+
+        <!-- Real-Time Activity Feed -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
+            <div class="px-5 py-4 border-b border-gray-800 flex justify-between items-center bg-gray-950/30">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <h2 class="text-sm font-semibold text-white">Live Activity</h2>
+                </div>
+            </div>
+            <div class="divide-y divide-gray-800 overflow-y-auto max-h-72" wire:poll.5s>
+                @forelse($recentActivities as $activity)
+                    <div class="px-5 py-3 hover:bg-gray-800/30 transition">
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 mt-0.5 border border-gray-700">
+                                @if($activity->user)
+                                    <img src="{{ $activity->user->profile_photo_url }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full bg-gray-800 flex items-center justify-center text-gray-400 text-xs">?</div>
+                                @endif
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs text-gray-300">
+                                    <span class="font-medium text-white">{{ $activity->user ? $activity->user->name : 'System' }}</span>
+                                    <br>
+                                    <span class="text-gray-400">{{ $activity->description }}</span>
+                                </p>
+                                <p class="text-[10px] text-gray-500 mt-1">{{ $activity->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="px-5 py-8 text-center text-gray-500 text-xs">No recent activity.</div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Top Articles by Views -->
         <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
@@ -135,3 +181,69 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener('livewire:init', () => {
+        const topArticles = @json($topArticles);
+        
+        if (topArticles.length > 0) {
+            const labels = topArticles.map(a => a.title.length > 30 ? a.title.substring(0, 30) + '...' : a.title);
+            const data = topArticles.map(a => a.views);
+
+            const options = {
+                series: [{
+                    name: 'Views',
+                    data: data
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 280,
+                    toolbar: { show: false },
+                    background: 'transparent',
+                    fontFamily: 'inherit'
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        horizontal: false,
+                        columnWidth: '40%',
+                    }
+                },
+                colors: ['#f59e0b'], // Amber-500
+                dataLabels: { enabled: false },
+                xaxis: {
+                    categories: labels,
+                    labels: {
+                        style: { colors: '#9ca3af', fontSize: '10px' }
+                    },
+                    axisBorder: { show: false },
+                    axisTicks: { show: false }
+                },
+                yaxis: {
+                    labels: {
+                        style: { colors: '#9ca3af' },
+                        formatter: (val) => { return Math.round(val) }
+                    }
+                },
+                grid: {
+                    borderColor: '#374151',
+                    strokeDashArray: 4,
+                    yaxis: { lines: { show: true } }
+                },
+                theme: { mode: 'dark' },
+                tooltip: {
+                    theme: 'dark',
+                    y: { formatter: function (val) { return val + " views" } }
+                }
+            };
+
+            const chart = new ApexCharts(document.querySelector("#trafficChart"), options);
+            chart.render();
+        } else {
+            document.querySelector("#trafficChart").innerHTML = '<div class="h-full flex items-center justify-center text-gray-500 text-sm">No data available for chart.</div>';
+        }
+    });
+</script>
+@endpush

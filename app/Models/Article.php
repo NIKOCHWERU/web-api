@@ -13,7 +13,7 @@ class Article extends Model
     protected $fillable = [
         'title', 'slug', 'summary', 'content', 'image',
         'status', 'tags', 'is_published', 'published_at',
-        'category_id', 'supporting_images', 'meta_title',
+        'category_id', 'user_id', 'supporting_images', 'meta_title',
         'meta_description', 'focus_keyword', 'canonical_url',
         'seo_score', 'readability_score', 'views',
     ];
@@ -38,6 +38,16 @@ class Article extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->author();
     }
 
     public function getImageUrlAttribute(): ?string

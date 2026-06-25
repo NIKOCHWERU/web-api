@@ -8,6 +8,8 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -24,6 +26,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
+        'profile_photo_path',
     ];
 
     /**
@@ -63,5 +66,28 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the user's profile photo URL.
+     */
+    protected function profilePhotoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->profile_photo_path) {
+                    return \Illuminate\Support\Facades\Storage::url($this->profile_photo_path);
+                }
+                return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=fff&background=f59e0b&bold=true';
+            },
+        );
+    }
+
+    /**
+     * Get the articles authored by the user.
+     */
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class);
     }
 }

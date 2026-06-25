@@ -15,6 +15,7 @@ class UserManager extends Component
     public $role = 'editor';
     public $userId = null;
     public $isEdit = false;
+    public $showModal = false;
 
     public function mount()
     {
@@ -26,6 +27,12 @@ class UserManager extends Component
         $this->users = User::all();
     }
 
+    public function create()
+    {
+        $this->reset(['name', 'email', 'password', 'role', 'userId', 'isEdit']);
+        $this->showModal = true;
+    }
+
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -35,11 +42,12 @@ class UserManager extends Component
         $this->role = $user->role ?? 'editor';
         $this->password = '';
         $this->isEdit = true;
+        $this->showModal = true;
     }
 
     public function cancel()
     {
-        $this->reset(['name', 'email', 'password', 'role', 'userId', 'isEdit']);
+        $this->reset(['name', 'email', 'password', 'role', 'userId', 'isEdit', 'showModal']);
     }
 
     public function save()

@@ -34,7 +34,7 @@ class ArticleList extends Component
 
     public function render()
     {
-        $articles = Article::with('category')
+        $articles = Article::with(['category', 'author'])
             ->when($this->search, function ($query) {
                 $query->where('title', 'like', '%' . $this->search . '%')
                       ->orWhere('slug', 'like', '%' . $this->search . '%');

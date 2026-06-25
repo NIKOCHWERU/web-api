@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Articles;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\ActivityLog;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -128,9 +129,20 @@ class ArticleEditor extends Component
 
         if ($this->article) {
             $this->article->update($data);
+            ActivityLog::create([
+                'user_id' => auth()->id(),
+                'action' => 'updated_article',
+                'description' => auth()->user()->name . ' memperbarui artikel "' . $this->title . '"'
+            ]);
             session()->flash('success', 'Article updated successfully.');
         } else {
+            $data['user_id'] = auth()->id();
             $this->article = Article::create($data);
+            ActivityLog::create([
+                'user_id' => auth()->id(),
+                'action' => 'created_article',
+                'description' => auth()->user()->name . ' membuat artikel baru "' . $this->title . '"'
+            ]);
             session()->flash('success', 'Article created successfully.');
         }
 

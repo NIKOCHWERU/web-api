@@ -60,6 +60,19 @@ class ArticleEditor extends Component
         }
     }
 
+    public function addTag($tag)
+    {
+        $tag = trim($tag);
+        if ($tag && !in_array($tag, $this->tags)) {
+            $this->tags[] = $tag;
+        }
+    }
+
+    public function removeTag($index)
+    {
+        array_splice($this->tags, $index, 1);
+    }
+
     public function save($setStatus = null)
     {
         if ($setStatus) {

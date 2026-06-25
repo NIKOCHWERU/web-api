@@ -46,7 +46,7 @@
     </style>
     @livewireStyles
 </head>
-<body class="bg-gray-950 text-gray-100 flex" x-data="{ sidebarOpen: true }">
+<body class="bg-gray-950 text-gray-100 flex" x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
 
     <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
     <aside class="sidebar bg-gray-900 border-r border-gray-800 flex flex-col fixed top-0 left-0 h-full z-30 transition-transform duration-300"
@@ -126,7 +126,7 @@
 
     <!-- ── Main Content ─────────────────────────────────────────────────── -->
     <div class="flex-1 flex flex-col min-h-screen transition-all duration-300"
-         :class="{'ml-[260px]': sidebarOpen, 'ml-0': !sidebarOpen}">
+         :style="{ marginLeft: sidebarOpen ? '260px' : '0px' }">
         <!-- Header -->
         <header class="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
             <div class="flex items-center gap-4">
@@ -148,8 +148,11 @@
 
         <!-- Content -->
         <main class="flex-1 p-6">
-            {{ $slot ?? '' }}
-            @yield('content')
+            @hasSection('content')
+                @yield('content')
+            @else
+                {{ $slot ?? '' }}
+            @endif
         </main>
     </div>
 

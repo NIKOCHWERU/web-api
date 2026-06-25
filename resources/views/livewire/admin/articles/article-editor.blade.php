@@ -363,75 +363,103 @@
 
 @push('scripts')
 <script>
-document.addEventListener('alpine:init', () => {
-    Alpine.data('articleEditor', () => ({
-        title: @entangle('title'),
-        summary: @entangle('summary'),
-        keyword: @entangle('focus_keyword'),
-        contentHtml: '',
-        wordCount: 0,
+(function() {
+    // Register articleEditor BEFORE Alpine starts — use document.addEventListener('alpine:init')
+    // @entangle works here because Livewire compiles this Blade view first
+    function registerArticleEditor() {
+        if (typeof Alpine === 'undefined') {
+            setTimeout(registerArticleEditor, 50);
+            return;
+        }
+        Alpine.data('articleEditor', () => ({
+            title: @entangle('title'),
+            summary: @entangle('summary'),
+            keyword: @entangle('focus_keyword'),
+            contentHtml: '',
+            wordCount: 0,
 
-        get seoScore() {
-            let score = 15;
-            const kw = (this.keyword || '').toLowerCase();
-            if (kw) {
-                if (this.title && this.title.toLowerCase().includes(kw)) score += 25;
-                if (this.summary && this.summary.toLowerCase().includes(kw)) score += 20;
-                if (this.contentHtml && this.contentHtml.toLowerCase().includes(kw)) score += 15;
+            get seoScore() {
+                let score = 15;
+                const kw = (this.keyword || '').toLowerCase();
+                if (kw) {
+                    if (this.title && this.title.toLowerCase().includes(kw)) score += 25;
+                    if (this.summary && this.summary.toLowerCase().includes(kw)) score += 20;
+                    if (this.contentHtml && this.contentHtml.toLowerCase().includes(kw)) score += 15;
+                }
+                if (this.summary && this.summary.length > 50) score += 15;
+                if (this.wordCount > 300) score += 10;
+                return Math.min(100, score);
             }
-            if (this.summary && this.summary.length > 50) score += 15;
-            if (this.wordCount > 300) score += 10;
-            return Math.min(100, score);
-        }
-    }));
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const quill = new Quill('#quill-editor', {
-        theme: 'snow',
-        placeholder: 'Tulis isi artikel di sini...',
-        modules: {
-            toolbar: [
-                [{ 'header': [1,2,3,4,5,6,false] }],
-                ['bold','italic','underline','strike'],
-                ['blockquote','code-block'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                [{ 'align': [] }],
-                ['link','image','video'],
-                ['clean']
-            ]
-        }
-    });
-
-    const existingContent = `{!! addslashes($content ?? '') !!}`;
-    if (existingContent) quill.root.innerHTML = existingContent;
-
-    quill.on('text-change', () => {
-        let html = quill.root.innerHTML;
-        if (html === '<p><br></p>') html = '';
-        @this.set('content', html);
-
-        // Sync to Alpine
-        const el = document.querySelector('[x-data="articleEditor()"]');
-        if (el && el._x_dataStack) {
-            const data = el._x_dataStack[0];
-            if (data) {
-                data.contentHtml = html;
-                const text = quill.getText().trim();
-                data.wordCount = text.length > 0 ? text.split(/\s+/).filter(w => w).length : 0;
-            }
-        }
-    });
-});
-
-// Flatpickr
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('datePicker')) {
-        flatpickr("#datePicker", {
-            dateFormat: "Y-m-d",
-            defaultDate: "{{ $published_at ?? now()->format('Y-m-d') }}"
-        });
+        }));
     }
-});
+
+    // Register via alpine:init (fires before Alpine initializes components)
+    document.addEventListener('alpine:init', registerArticleEditor);
+
+    // Quill setup
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof Quill === 'undefined' || !document.getElementById('quill-editor')) return;
+
+        const quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            placeholder: 'Tulis isi artikel di sini...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1,2,3,4,5,6,false] }],
+                    ['bold','italic','underline','strike'],
+                    ['blockquote','code-block'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['link','image','video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        const existingContent = `{!! addslashes($content ?? '') !!}`;
+        if (existingContent) quill.root.innerHTML = existingContent;
+
+        quill.on('text-change', () => {
+            let html = quill.root.innerHTML;
+            if (html === '<p><br></p>') html = '';
+
+            // Sync to Livewire — try multiple strategies
+            try {
+                // Livewire v3: find component by wire:id element
+                const wireEl = document.querySelector('[wire\\:id]');
+                if (wireEl) {
+                    const wireId = wireEl.getAttribute('wire:id');
+                    const component = Livewire.find(wireId);
+                    if (component) {
+                        component.set('content', html);
+                    }
+                }
+            } catch(e) { /* silent */ }
+
+            // Sync wordCount to Alpine
+            try {
+                const el = document.querySelector('[x-data]');
+                if (el && el._x_dataStack) {
+                    const data = el._x_dataStack.find(d => 'wordCount' in d);
+                    if (data) {
+                        data.contentHtml = html;
+                        const text = quill.getText().trim();
+                        data.wordCount = text.length > 0 ? text.split(/\s+/).filter(w => w).length : 0;
+                    }
+                }
+            } catch(e) { /* silent */ }
+        });
+    });
+
+    // Flatpickr
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('datePicker') && typeof flatpickr !== 'undefined') {
+            flatpickr("#datePicker", {
+                dateFormat: "Y-m-d",
+                defaultDate: "{{ $published_at ?? now()->format('Y-m-d') }}"
+            });
+        }
+    });
+})();
 </script>
 @endpush

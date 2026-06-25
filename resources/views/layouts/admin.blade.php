@@ -370,7 +370,7 @@
     <!-- Scripts -->
     <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    {{-- Alpine is bundled by Livewire — do NOT load CDN Alpine separately --}}
 
     <!-- ══ Windows 10 Window Engine ══════════════════════════════════════════ -->
     <script>

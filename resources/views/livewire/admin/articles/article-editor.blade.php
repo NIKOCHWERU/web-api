@@ -9,7 +9,7 @@
 @endsection
 
 @section('header-actions')
-    <button onclick="document.getElementById('previewWindow').style.display='flex'"
+    <button onclick="WinManager.open('previewWindow')"
             class="flex items-center gap-2 text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 px-3 py-1.5 rounded-lg transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
         Show Preview
@@ -116,77 +116,32 @@
     <!-- ══════════════════════════════════════════════════════════════════ -->
     <div class="w-full lg:w-4/12 flex flex-col gap-6">
 
-        <!-- ── PREVIEW WINDOW ──────────────────────────────────────────── -->
-        <div id="previewWindow"
-             class="bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-2xl shadow-black/50 flex flex-col"
-             style="display:flex !important;"
-             x-data="{
-                minimized: false,
-                maximized: false,
-                dragging: false,
-                startX: 0, startY: 0, offsetX: 0, offsetY: 0,
-                openNewTab() {
-                    const t = document.querySelector('[x-data]').__x.$data.title || 'preview';
-                    window.open('{{ route('admin.articles.index') }}', '_blank');
-                },
-                startDrag(e) {
-                    if(this.maximized) return;
-                    this.dragging = true;
-                    const el = document.getElementById('previewWindow');
-                    const rect = el.getBoundingClientRect();
-                    this.offsetX = e.clientX - rect.left;
-                    this.offsetY = e.clientY - rect.top;
-                    el.style.position = 'fixed';
-                    el.style.zIndex = '9999';
-                    el.style.width = '360px';
-                },
-                onDrag(e) {
-                    if(!this.dragging) return;
-                    const el = document.getElementById('previewWindow');
-                    el.style.left = (e.clientX - this.offsetX) + 'px';
-                    el.style.top = (e.clientY - this.offsetY) + 'px';
-                },
-                stopDrag() { this.dragging = false; }
-             }"
-             @mousemove.window="onDrag($event)"
-             @mouseup.window="stopDrag()">
+        <!-- ── PREVIEW WINDOW (Windows 10 Style) ────────────────────────── -->
+        <div id="previewWindow" class="win-window shadow-2xl shadow-black/50" style="display: none;">
 
             <!-- Window Title Bar -->
-            <div class="flex items-center justify-between px-4 py-2.5 bg-gray-950/60 border-b border-gray-800 cursor-move select-none"
-                 @mousedown="startDrag($event)">
-                <!-- Traffic Lights -->
-                <div class="flex items-center gap-1.5">
-                    <!-- Close -->
-                    <button @click="document.getElementById('previewWindow').style.display='none'"
-                            class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center group transition"
-                            title="Close">
-                        <svg class="w-2 h-2 text-red-900 opacity-0 group-hover:opacity-100" fill="currentColor" viewBox="0 0 8 8"><path d="M1.41.41L.41 1.41 3 4 .41 6.59l1 1L4 5l2.59 2.59 1-1L5 4l2.59-2.59-1-1L4 3z"/></svg>
-                    </button>
+            <div class="win-titlebar">
+                <span class="win-titlebar-icon">🗖</span>
+                <span class="win-titlebar-title">Preview Artikel Card</span>
+                
+                <div class="win-controls">
                     <!-- Minimize -->
-                    <button @click="minimized = !minimized"
-                            class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 flex items-center justify-center group transition"
-                            title="Minimize">
-                        <svg class="w-2 h-2 text-yellow-900 opacity-0 group-hover:opacity-100" fill="currentColor" viewBox="0 0 8 8"><path d="M0 3.5h8v1H0z"/></svg>
+                    <button onclick="WinManager.minimize('previewWindow')" class="win-btn win-btn-min text-gray-400 hover:text-white" title="Minimize">
+                        <svg viewBox="0 0 10 10"><path d="M0 5h10v1H0z" fill="currentColor"/></svg>
                     </button>
                     <!-- Maximize -->
-                    <button @click="maximized = !maximized"
-                            class="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 flex items-center justify-center group transition"
-                            title="Maximize">
-                        <svg class="w-2 h-2 text-green-900 opacity-0 group-hover:opacity-100" fill="currentColor" viewBox="0 0 8 8"><path d="M0 0v4h4V0H0zm1 1h2v2H1V1zM4 4v4h4V4H4zm1 1h2v2H5V5z"/></svg>
+                    <button onclick="WinManager.maximize('previewWindow')" class="win-btn win-btn-max text-gray-400 hover:text-white" title="Maximize">
+                        <svg viewBox="0 0 10 10"><path d="M0 0v10h10V0H0zm1 1h8v8H1V1z" fill="currentColor"/></svg>
+                    </button>
+                    <!-- Close -->
+                    <button onclick="WinManager.close('previewWindow')" class="win-btn win-btn-close text-gray-400 hover:text-white" title="Close">
+                        <svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
                     </button>
                 </div>
-
-                <span class="text-xs font-medium text-gray-300 absolute left-1/2 -translate-x-1/2">Preview Artikel Card</span>
-
-                <!-- Open in new tab -->
-                <a href="{{ $article ? route('admin.articles.edit', $article) : '#' }}" target="_blank"
-                   class="text-gray-500 hover:text-amber-400 transition" title="Open in new tab">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                </a>
             </div>
 
-            <!-- Window Content (collapsible) -->
-            <div x-show="!minimized" x-transition class="p-4">
+            <!-- Window Content -->
+            <div class="win-body p-4 bg-gray-900">
                 <!-- Card Preview -->
                 <div class="bg-gray-950 rounded-lg overflow-hidden border border-gray-800 shadow-inner">
                     <div class="h-36 bg-gray-800 relative overflow-hidden">
@@ -236,6 +191,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
             <!-- Maximized overlay -->
             <div x-show="maximized" x-cloak

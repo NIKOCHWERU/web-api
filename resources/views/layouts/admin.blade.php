@@ -42,7 +42,6 @@
         ::-webkit-scrollbar-track { background: #111827; }
         ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
 
-        /* ── Win10 Window ─── */
         .win-window {
             position: fixed;
             z-index: 9999;
@@ -55,7 +54,7 @@
             min-width: 320px;
             min-height: 200px;
             resize: both;
-            overflow: auto;
+            overflow: hidden;
         }
         .win-window.maximized {
             top: 0 !important;
@@ -356,28 +355,6 @@
         window.WinManager = {
             init(id) {
                 const win = document.getElementById(id);
-                if (!win) return;
-                const titlebar = win.querySelector('.win-titlebar');
-
-                // Drag
-                titlebar.addEventListener('mousedown', function(e) {
-                    if (win.classList.contains('maximized')) return;
-                    if (e.target.closest('.win-controls')) return;
-                    isDragging = true;
-                    activeWindow = win;
-                    const rect = win.getBoundingClientRect();
-                    dragOffsetX = e.clientX - rect.left;
-                    dragOffsetY = e.clientY - rect.top;
-                    win.style.transition = 'none';
-                    e.preventDefault();
-                });
-
-                // Double click title = maximize
-                titlebar.addEventListener('dblclick', function(e) {
-                    if (e.target.closest('.win-controls')) return;
-                    WinManager.toggleMax(win);
-                });
-
                 return win;
             },
 
@@ -427,12 +404,41 @@
                 if (!win) return;
                 win.style.display = 'flex';
                 // Center if not placed
-                if (!win.style.top) {
-                    win.style.top = '80px';
+                if (!win.style.top || win.style.top === '80px') {
+                    win.style.top = '100px';
                     win.style.left = Math.max(0, (window.innerWidth - 420) / 2) + 'px';
                 }
             }
         };
+
+        // Event delegation for dragging
+        document.addEventListener('mousedown', function(e) {
+            const titlebar = e.target.closest('.win-titlebar');
+            if (!titlebar) return;
+            const win = titlebar.closest('.win-window');
+            if (!win) return;
+
+            if (win.classList.contains('maximized')) return;
+            if (e.target.closest('.win-controls')) return;
+
+            isDragging = true;
+            activeWindow = win;
+            const rect = win.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
+            win.style.transition = 'none';
+            e.preventDefault();
+        });
+
+        // Event delegation for double click title = maximize
+        document.addEventListener('dblclick', function(e) {
+            const titlebar = e.target.closest('.win-titlebar');
+            if (!titlebar) return;
+            const win = titlebar.closest('.win-window');
+            if (!win) return;
+            if (e.target.closest('.win-controls')) return;
+            WinManager.toggleMax(win);
+        });
 
         document.addEventListener('mousemove', function(e) {
             if (isDragging && activeWindow) {
@@ -449,14 +455,11 @@
             activeWindow = null;
         });
 
-        // Init all windows on load
+        // Setup initial position of windows
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.win-window').forEach(function(win) {
-                WinManager.init(win.id);
-                // Set initial position if not set
                 if (!win.style.top) {
-                    const rect = win.parentElement ? win.parentElement.getBoundingClientRect() : null;
-                    win.style.top  = '80px';
+                    win.style.top  = '100px';
                     win.style.left = (window.innerWidth - 420) + 'px';
                     if (win.style.left < 0) win.style.left = '20px';
                 }

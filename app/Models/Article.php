@@ -40,6 +40,24 @@ class Article extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image) {
+            return null;
+        }
+
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            return $this->image;
+        }
+
+        $path = ltrim($this->image, '/');
+        if (str_starts_with($path, 'storage/')) {
+            $path = substr($path, 8);
+        }
+
+        return \Illuminate\Support\Facades\Storage::url($path);
+    }
+
     public function incrementViews(): void
     {
         $this->increment('views');

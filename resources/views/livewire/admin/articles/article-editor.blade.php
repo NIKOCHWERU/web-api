@@ -145,8 +145,8 @@
                 <!-- Card Preview -->
                 <div class="bg-gray-950 rounded-lg overflow-hidden border border-gray-800 shadow-inner">
                     <div class="h-36 bg-gray-800 relative overflow-hidden">
-                        @if($existingImage && !$image)
-                            <img src="{{ Storage::url($existingImage) }}" class="w-full h-full object-cover">
+                        @if($this->getExistingImageUrl() && !$image)
+                            <img src="{{ $this->getExistingImageUrl() }}" class="w-full h-full object-cover">
                         @elseif($image)
                             <img src="{{ $image->temporaryUrl() }}" class="w-full h-full object-cover">
                         @else
@@ -273,8 +273,8 @@
                     @if($image)
                         <img src="{{ $image->temporaryUrl() }}" class="w-24 h-24 object-cover rounded-lg mb-2 shadow-lg">
                         <p class="text-xs text-amber-500 font-medium">Image selected ✓</p>
-                    @elseif($existingImage)
-                        <img src="{{ Storage::url($existingImage) }}" class="w-24 h-24 object-cover rounded-lg mb-2 shadow-lg">
+                    @elseif($this->getExistingImageUrl())
+                        <img src="{{ $this->getExistingImageUrl() }}" class="w-24 h-24 object-cover rounded-lg mb-2 shadow-lg">
                         <p class="text-xs text-gray-400">Click to change</p>
                     @else
                         <svg class="w-8 h-8 text-gray-500 mb-2 group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>

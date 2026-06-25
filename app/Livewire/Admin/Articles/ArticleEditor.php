@@ -53,6 +53,24 @@ class ArticleEditor extends Component
         }
     }
 
+    public function getExistingImageUrl()
+    {
+        if (!$this->existingImage) {
+            return null;
+        }
+
+        if (filter_var($this->existingImage, FILTER_VALIDATE_URL)) {
+            return $this->existingImage;
+        }
+
+        $path = ltrim($this->existingImage, '/');
+        if (str_starts_with($path, 'storage/')) {
+            $path = substr($path, 8);
+        }
+
+        return \Illuminate\Support\Facades\Storage::url($path);
+    }
+
     public function updatedTitle()
     {
         if (!$this->article) {

@@ -122,7 +122,7 @@
                 <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
                     <!-- Open in new tab -->
                     @if($article)
-                    <a href="{{ route('admin.articles.edit', $article) }}" target="_blank"
+                    <a href="{{ config('app.frontend_url', 'http://localhost:3000') }}/artikel/{{ $article->slug ?? '' }}" target="_blank"
                        class="win-btn text-gray-400 hover:text-white" title="Open in New Tab" style="display:flex;align-items:center;">
                         <svg viewBox="0 0 14 14" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M6 2H2v10h10V8M8 1h5v5M13 1L7 7"/>
@@ -187,9 +187,7 @@
                     <!-- Meta -->
                     <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#6b7280;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #e5e7eb;">
                         <div style="display:flex;align-items:center;gap:6px;">
-                            <div style="width:28px;height:28px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">
-                                {{ substr(auth()->user()->name, 0, 1) }}
-                            </div>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=f59e0b&color=fff&bold=true" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
                             <span style="font-weight:500;color:#374151;">{{ auth()->user()->name }}</span>
                         </div>
                         <span>Ã¢ÂÂ¢</span>

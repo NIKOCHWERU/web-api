@@ -17,11 +17,14 @@ Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 });
 
+// ── Login Alias Fallback for default Authenticate Middleware ──────────────────
+Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('login');
+
 // ── Admin Auth ────────────────────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::middleware(['auth', AdminMiddleware::class])->group(function () {
         Route::get('/',                              Dashboard::class)->name('dashboard');

@@ -166,7 +166,7 @@
     </style>
     @livewireStyles
 </head>
-<body class="bg-gray-950 text-gray-100 flex overflow-hidden h-screen transition-colors duration-200"
+<body class="bg-gray-950 text-gray-100 transition-colors duration-200"
       x-data="{
         sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
         darkMode: localStorage.getItem('theme') !== 'light',
@@ -316,7 +316,7 @@
     </aside>
 
     <!-- ══ MAIN CONTENT ══════════════════════════════════════════════════════ -->
-    <div id="main-content" class="flex flex-col h-screen flex-1 overflow-hidden">
+    <div id="main-content" class="flex flex-col min-h-screen">
 
         <!-- Header -->
         <header class="bg-gray-900 border-b border-gray-800 px-5 py-3 flex items-center justify-between sticky top-0 z-20 h-14 shrink-0">
@@ -346,7 +346,7 @@
         </header>
 
         <!-- Content -->
-        <main class="flex-1 p-6 overflow-y-auto">
+        <main class="flex-1 p-6">
             @hasSection('content')
                 @yield('content')
             @else

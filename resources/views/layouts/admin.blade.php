@@ -121,6 +121,29 @@
         /* Badge for contacts */
         .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block; }
 
+        /* ── Article Body Preview Typography ── */
+        #preview-content h1 { font-size: 26px; font-weight: 800; margin: 24px 0 12px; color: #111827; letter-spacing: -0.02em; }
+        #preview-content h2 { font-size: 22px; font-weight: 700; margin: 20px 0 10px; color: #1f2937; border-bottom: 2px solid #f59e0b; padding-bottom: 6px; }
+        #preview-content h3 { font-size: 18px; font-weight: 700; margin: 18px 0 8px; color: #374151; }
+        #preview-content h4, #preview-content h5, #preview-content h6 { font-size: 15px; font-weight: 600; margin: 14px 0 6px; color: #4b5563; }
+        #preview-content p { margin: 0 0 16px; font-size: 15px; line-height: 1.85; color: #374151; }
+        #preview-content ul, #preview-content ol { margin: 0 0 16px 24px; font-size: 15px; line-height: 1.8; color: #374151; }
+        #preview-content ul { list-style: disc; }
+        #preview-content ol { list-style: decimal; }
+        #preview-content li { margin-bottom: 6px; }
+        #preview-content blockquote { border-left: 4px solid #f59e0b; background: #fffbeb; margin: 20px 0; padding: 12px 16px; border-radius: 0 8px 8px 0; color: #78350f; font-style: italic; }
+        #preview-content code { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 4px; padding: 1px 6px; font-size: 13px; font-family: 'JetBrains Mono', monospace; color: #dc2626; }
+        #preview-content pre { background: #1f2937; color: #e5e7eb; border-radius: 8px; padding: 16px; overflow-x: auto; margin: 16px 0; font-size: 13px; line-height: 1.6; }
+        #preview-content pre code { background: none; border: none; color: inherit; padding: 0; }
+        #preview-content img { max-width: 100%; height: auto; border-radius: 8px; margin: 16px 0; }
+        #preview-content a { color: #d97706; text-decoration: underline; }
+        #preview-content strong { font-weight: 700; color: #111827; }
+        #preview-content em { font-style: italic; }
+        #preview-content hr { border: none; border-top: 2px solid #e5e7eb; margin: 28px 0; }
+        #preview-content table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+        #preview-content th { background: #f9fafb; border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; font-weight: 600; }
+        #preview-content td { border: 1px solid #e5e7eb; padding: 8px 12px; }
+
         /* ── LIGHT MODE OVERRIDES ── */
         html:not(.dark) body { background: #f8fafc; color: #1e293b; }
         html:not(.dark) #sidebar { background: #ffffff; border-color: #e2e8f0; }

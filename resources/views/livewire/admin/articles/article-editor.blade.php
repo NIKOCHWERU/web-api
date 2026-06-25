@@ -111,87 +111,124 @@
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <!-- RIGHT COLUMN (30%)                                                 -->
-    <!-- ══════════════════════════════════════════════════════════════════ -->
-    <div class="w-full lg:w-4/12 flex flex-col gap-6">
-
-        <!-- ── PREVIEW WINDOW (Windows 10 Style) ────────────────────────── -->
-        <div id="previewWindow" class="win-window shadow-2xl shadow-black/50" style="display: none;">
+    <!-- ═══════�        <!-- ── PREVIEW WINDOW (Full Article Preview) ────────────────────── -->
+        <div id="previewWindow" class="win-window shadow-2xl shadow-black/50" style="display: none; width: 780px; height: 85vh;">
 
             <!-- Window Title Bar -->
             <div class="win-titlebar">
-                <span class="win-titlebar-icon">🗖</span>
-                <span class="win-titlebar-title">Preview Artikel Card</span>
-                
-                <div class="win-controls">
-                    <!-- Minimize -->
-                    <button onclick="WinManager.minimize('previewWindow')" class="win-btn win-btn-min text-gray-400 hover:text-white" title="Minimize">
-                        <svg viewBox="0 0 10 10"><path d="M0 5h10v1H0z" fill="currentColor"/></svg>
-                    </button>
-                    <!-- Maximize -->
-                    <button onclick="WinManager.maximize('previewWindow')" class="win-btn win-btn-max text-gray-400 hover:text-white" title="Maximize">
-                        <svg viewBox="0 0 10 10"><path d="M0 0v10h10V0H0zm1 1h8v8H1V1z" fill="currentColor"/></svg>
-                    </button>
-                    <!-- Close -->
-                    <button onclick="WinManager.close('previewWindow')" class="win-btn win-btn-close text-gray-400 hover:text-white" title="Close">
-                        <svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
-                    </button>
+                <span class="win-titlebar-icon">📄</span>
+                <span class="win-titlebar-title">Preview Artikel — <span x-text="title || 'Artikel Baru'"></span></span>
+
+                <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
+                    <!-- Open in new tab -->
+                    @if($article)
+                    <a href="{{ route('admin.articles.edit', $article) }}" target="_blank"
+                       class="win-btn text-gray-400 hover:text-white" title="Open in New Tab" style="display:flex;align-items:center;">
+                        <svg viewBox="0 0 14 14" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 2H2v10h10V8M8 1h5v5M13 1L7 7"/>
+                        </svg>
+                    </a>
+                    @endif
+                    <div class="win-controls">
+                        <button onclick="WinManager.minimize('previewWindow')" class="win-btn win-btn-min text-gray-400 hover:text-white" title="Minimize">
+                            <svg viewBox="0 0 10 10"><path d="M0 5h10v1H0z" fill="currentColor"/></svg>
+                        </button>
+                        <button onclick="WinManager.maximize('previewWindow')" class="win-btn win-btn-max text-gray-400 hover:text-white" title="Maximize">
+                            <svg viewBox="0 0 10 10"><path d="M0 0v10h10V0H0zm1 1h8v8H1V1z" fill="currentColor"/></svg>
+                        </button>
+                        <button onclick="WinManager.close('previewWindow')" class="win-btn win-btn-close text-gray-400 hover:text-white" title="Close">
+                            <svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Window Content -->
-            <div class="win-body p-4 bg-gray-900">
-                <!-- Card Preview -->
-                <div class="bg-gray-950 rounded-lg overflow-hidden border border-gray-800 shadow-inner">
-                    <div class="h-36 bg-gray-800 relative overflow-hidden">
-                        @if($this->getExistingImageUrl() && !$image)
-                            <img src="{{ $this->getExistingImageUrl() }}" class="w-full h-full object-cover">
-                        @elseif($image)
-                            <img src="{{ $image->temporaryUrl() }}" class="w-full h-full object-cover">
-                        @else
-                            <div class="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-                                <svg class="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            </div>
-                        @endif
-                        <div class="absolute top-2 left-2">
-                            <span class="bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Highlight News</span>
+            <!-- Window Content — Full Article Preview -->
+            <div class="win-body" style="overflow-y:auto; background:#fff; color:#1a1a1a;">
+
+                <!-- Hero Image -->
+                <div style="width:100%;height:280px;background:#e5e7eb;overflow:hidden;position:relative;">
+                    @if($this->getExistingImageUrl() && !$image)
+                        <img src="{{ $this->getExistingImageUrl() }}" style="width:100%;height:100%;object-fit:cover;">
+                    @elseif($image)
+                        <img src="{{ $image->temporaryUrl() }}" style="width:100%;height:100%;object-fit:cover;">
+                    @else
+                        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1f2937 0%,#374151 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+                            <svg width="48" height="48" fill="none" stroke="#6b7280" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <span style="font-size:11px;color:#6b7280;">Belum ada gambar</span>
                         </div>
+                    @endif
+                    <!-- Category badge -->
+                    @if($category_id)
+                    <div style="position:absolute;top:16px;left:16px;">
+                        <span style="background:#f59e0b;color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:0.05em;">
+                            {{ $categories->firstWhere('id', $category_id)?->name ?? '' }}
+                        </span>
                     </div>
-                    <div class="p-4">
-                        <h4 class="text-sm font-bold text-white leading-snug mb-2" x-text="title || 'Judul Artikel Menarik...'"></h4>
-                        <div class="flex items-center gap-2 text-[10px] text-gray-400 mb-2">
-                            <div class="flex items-center gap-1">
-                                <div class="w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center text-white text-[8px] font-bold">{{ substr(auth()->user()->name, 0, 1) }}</div>
-                                <span>{{ auth()->user()->name }}</span>
-                            </div>
-                            <span>•</span>
-                            <span>{{ now()->format('M d, Y') }}</span>
-                            @if($category_id)
-                                <span>•</span>
-                                <span class="bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded text-[9px]">
-                                    {{ $categories->firstWhere('id', $category_id)?->name ?? '' }}
-                                </span>
-                            @endif
-                        </div>
-                        <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed" x-text="summary || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'"></p>
-                    </div>
+                    @endif
                 </div>
 
-                <!-- SEO Score Bar -->
-                <div class="mt-3 pt-3 border-t border-gray-800">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[10px] text-gray-500">SEO Score</span>
-                        <span class="text-[10px] font-bold text-white" x-text="seoScore + '/100'"></span>
+                <!-- Article Body -->
+                <div style="max-width:700px;margin:0 auto;padding:32px 28px 60px;">
+
+                    <!-- Tags -->
+                    @if(count($tags))
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
+                        @foreach($tags as $tag)
+                        <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid #fde68a;">#{{ $tag }}</span>
+                        @endforeach
                     </div>
-                    <div class="w-full bg-gray-800 rounded-full h-1.5">
-                        <div class="h-1.5 rounded-full transition-all duration-500"
-                             :class="seoScore > 60 ? 'bg-emerald-500' : (seoScore > 30 ? 'bg-amber-500' : 'bg-red-500')"
-                             :style="'width:' + seoScore + '%'"></div>
+                    @endif
+
+                    <!-- Title -->
+                    <h1 style="font-size:28px;font-weight:800;line-height:1.25;color:#111827;margin:0 0 16px;letter-spacing:-0.02em;"
+                        x-text="title || 'Judul Artikel Menarik...'"></h1>
+
+                    <!-- Meta -->
+                    <div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#6b7280;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #e5e7eb;">
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <div style="width:28px;height:28px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">
+                                {{ substr(auth()->user()->name, 0, 1) }}
+                            </div>
+                            <span style="font-weight:500;color:#374151;">{{ auth()->user()->name }}</span>
+                        </div>
+                        <span>•</span>
+                        <span>{{ now()->format('d M Y') }}</span>
+                        <span>•</span>
+                        <span x-text="Math.max(1, Math.ceil(wordCount/200)) + ' menit baca'"></span>
+                        <span>•</span>
+                        <span x-text="wordCount + ' kata'"></span>
+                    </div>
+
+                    <!-- Summary / Lead -->
+                    <p style="font-size:15px;line-height:1.7;color:#374151;font-weight:500;font-style:italic;border-left:3px solid #f59e0b;padding-left:16px;margin-bottom:28px;background:#fffbeb;padding:12px 16px;border-radius:4px;"
+                       x-show="summary"
+                       x-text="summary"></p>
+
+                    <!-- Article Body Content -->
+                    <div id="preview-content"
+                         style="font-size:15px;line-height:1.8;color:#374151;font-family:'Inter',sans-serif;">
+                        {!! $content ?? '' !!}
+                    </div>
+
+                    <!-- Empty state -->
+                    <div id="preview-empty" style="text-align:center;padding:40px 0;color:#9ca3af;display:none;">
+                        <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin:0 auto 12px;display:block;opacity:.4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <p style="font-size:13px;">Belum ada konten. Mulai menulis di editor...</p>
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="margin-top:48px;padding-top:24px;border-top:1px solid #e5e7eb;">
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                            @foreach($tags as $tag)
+                            <span style="background:#f3f4f6;color:#6b7280;font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid #e5e7eb;">#{{ $tag }}</span>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+
 
         <!-- ── Publish ──────────────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
@@ -419,20 +456,34 @@
         const existingContent = `{!! addslashes($content ?? '') !!}`;
         if (existingContent) quill.root.innerHTML = existingContent;
 
+        // Init preview with existing content
+        const previewEl = document.getElementById('preview-content');
+        const previewEmpty = document.getElementById('preview-empty');
+        function updatePreview(html) {
+            if (previewEl) {
+                previewEl.innerHTML = html || '';
+                if (previewEmpty) {
+                    previewEmpty.style.display = html ? 'none' : 'block';
+                    previewEl.style.display = html ? '' : 'none';
+                }
+            }
+        }
+        updatePreview(existingContent);
+
         quill.on('text-change', () => {
             let html = quill.root.innerHTML;
             if (html === '<p><br></p>') html = '';
 
-            // Sync to Livewire — try multiple strategies
+            // Live update preview window
+            updatePreview(html);
+
+            // Sync to Livewire
             try {
-                // Livewire v3: find component by wire:id element
                 const wireEl = document.querySelector('[wire\\:id]');
                 if (wireEl) {
                     const wireId = wireEl.getAttribute('wire:id');
                     const component = Livewire.find(wireId);
-                    if (component) {
-                        component.set('content', html);
-                    }
+                    if (component) component.set('content', html);
                 }
             } catch(e) { /* silent */ }
 

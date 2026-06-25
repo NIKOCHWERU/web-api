@@ -193,42 +193,6 @@
             </div>
         </div>
 
-            <!-- Maximized overlay -->
-            <div x-show="maximized" x-cloak
-                 class="fixed inset-0 z-50 bg-gray-950/95 backdrop-blur-sm flex items-center justify-center p-8"
-                 style="display:none">
-                <div class="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-2xl shadow-2xl overflow-hidden">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800 bg-gray-950/40">
-                        <div class="flex items-center gap-1.5">
-                            <button @click="maximized = false" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition"></button>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <span class="text-sm font-semibold text-white">Article Preview — Full View</span>
-                        <button @click="maximized = false" class="text-gray-400 hover:text-white text-xs">Close</button>
-                    </div>
-                    <div class="p-8 max-h-[80vh] overflow-y-auto">
-                        @if($existingImage && !$image)
-                            <img src="{{ Storage::url($existingImage) }}" class="w-full h-64 object-cover rounded-xl mb-6">
-                        @elseif($image)
-                            <img src="{{ $image->temporaryUrl() }}" class="w-full h-64 object-cover rounded-xl mb-6">
-                        @endif
-                        <h1 class="text-2xl font-bold text-white mb-3" x-text="title || 'Judul Artikel'"></h1>
-                        <div class="flex items-center gap-3 text-sm text-gray-400 mb-6">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-bold">{{ substr(auth()->user()->name, 0, 1) }}</div>
-                                <span>{{ auth()->user()->name }}</span>
-                            </div>
-                            <span>•</span>
-                            <span>{{ now()->format('d M Y') }}</span>
-                        </div>
-                        <p class="text-gray-300 leading-relaxed mb-4" x-text="summary || ''"></p>
-                        <div class="prose prose-invert max-w-none text-gray-300 text-sm leading-relaxed" x-html="contentHtml || '<p class=&quot;text-gray-500&quot;>Konten artikel akan tampil di sini...</p>'"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- ── Publish ──────────────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-800 bg-gray-950/30">

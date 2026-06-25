@@ -117,12 +117,45 @@
 
         /* Badge for contacts */
         .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block; }
+
+        /* ── LIGHT MODE OVERRIDES ── */
+        html:not(.dark) body { background: #f8fafc; color: #1e293b; }
+        html:not(.dark) #sidebar { background: #ffffff; border-color: #e2e8f0; }
+        html:not(.dark) #sidebar .brand-text p { color: #0f172a; }
+        html:not(.dark) #sidebar a { color: #475569; }
+        html:not(.dark) #sidebar a:hover { background: #f1f5f9; color: #0f172a; }
+        html:not(.dark) #sidebar .nav-item.active { background: rgba(245,158,11,0.1); color: #d97706; border-right-color: #f59e0b; }
+        html:not(.dark) header { background: #ffffff; border-color: #e2e8f0; }
+        html:not(.dark) header h1 { color: #0f172a; }
+        html:not(.dark) header a, html:not(.dark) header button { color: #475569; }
+        html:not(.dark) header a:hover, html:not(.dark) header button:hover { color: #0f172a; }
+        html:not(.dark) .bg-gray-900 { background: #ffffff; border-color: #e2e8f0; }
+        html:not(.dark) .bg-gray-950 { background: #f1f5f9; border-color: #e2e8f0; }
+        html:not(.dark) .text-white { color: #0f172a; }
+        html:not(.dark) .text-gray-300 { color: #334155; }
+        html:not(.dark) .text-gray-400 { color: #475569; }
+        html:not(.dark) .text-gray-500 { color: #64748b; }
+        html:not(.dark) .border-gray-800 { border-color: #e2e8f0; }
+        html:not(.dark) .border-gray-700 { border-color: #cbd5e1; }
+        html:not(.dark) .bg-gray-950\/30 { background: rgba(241,245,249,0.5); }
+        html:not(.dark) .bg-gray-950\/50 { background: rgba(241,245,249,0.8); }
+        html:not(.dark) .bg-gray-950\/60 { background: rgba(241,245,249,0.9); }
+        html:not(.dark) .win-window { background: #f1f5f9; border-color: #cbd5e1; color: #1e293b; }
+        html:not(.dark) .win-titlebar { background: #e2e8f0; border-color: #cbd5e1; }
+        html:not(.dark) .win-titlebar-title { color: #0f172a; }
+        html:not(.dark) .win-body { background: #ffffff; }
+        html:not(.dark) .ql-toolbar.ql-snow { background: #f1f5f9; border-color: #cbd5e1; }
+        html:not(.dark) .ql-container.ql-snow { background: #ffffff; border-color: #cbd5e1; }
+        html:not(.dark) .ql-editor { color: #0f172a; }
+        html:not(.dark) input, html:not(.dark) select, html:not(.dark) textarea { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
+        html:not(.dark) input::placeholder, html:not(.dark) textarea::placeholder { color: #94a3b8 !important; }
     </style>
     @livewireStyles
 </head>
-<body class="bg-gray-950 text-gray-100 flex overflow-hidden h-screen"
+<body class="bg-gray-950 text-gray-100 flex overflow-hidden h-screen transition-colors duration-200"
       x-data="{
         sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+        darkMode: localStorage.getItem('theme') !== 'light',
         toggleSidebar() {
             this.sidebarCollapsed = !this.sidebarCollapsed;
             localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed);
@@ -135,6 +168,15 @@
                 sidebar.classList.remove('collapsed');
                 main.style.marginLeft = '260px';
             }
+        },
+        toggleTheme() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
         }
       }"
       x-init="
@@ -143,6 +185,11 @@
             document.getElementById('main-content').style.marginLeft = '64px';
         } else {
             document.getElementById('main-content').style.marginLeft = '260px';
+        }
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
       ">
 
@@ -273,6 +320,13 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
+                <!-- Theme Toggle Button -->
+                <button @click="toggleTheme()" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-800 transition" title="Toggle Theme">
+                    <!-- Sun icon for light mode (visible in dark mode) -->
+                    <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+                    <!-- Moon icon for dark mode (visible in light mode) -->
+                    <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
                 @yield('header-actions')
             </div>
         </header>

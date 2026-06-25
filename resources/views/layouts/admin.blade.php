@@ -130,11 +130,23 @@
         html:not(.dark) #sidebar .nav-item.active { background: rgba(245,158,11,0.1); color: #d97706; border-right-color: #f59e0b; }
         html:not(.dark) header { background: #ffffff; border-color: #e2e8f0; }
         html:not(.dark) header h1 { color: #0f172a; }
-        html:not(.dark) header a, html:not(.dark) header button { color: #475569; }
-        html:not(.dark) header a:hover, html:not(.dark) header button:hover { color: #0f172a; }
+        html:not(.dark) header a, html:not(.dark) header nav { color: #475569; }
+        html:not(.dark) header a:hover { color: #0f172a; }
         html:not(.dark) .bg-gray-900 { background: #ffffff; border-color: #e2e8f0; }
         html:not(.dark) .bg-gray-950 { background: #f1f5f9; border-color: #e2e8f0; }
         html:not(.dark) .text-white { color: #0f172a; }
+        /* Buttons with colored/dark backgrounds must ALWAYS keep white text */
+        html:not(.dark) button.bg-gray-800,
+        html:not(.dark) button.bg-gray-700,
+        html:not(.dark) button.bg-amber-500,
+        html:not(.dark) button.bg-amber-600,
+        html:not(.dark) button.bg-red-500,
+        html:not(.dark) button.bg-red-600,
+        html:not(.dark) .bg-gray-800 button,
+        html:not(.dark) a.bg-amber-500,
+        html:not(.dark) a.bg-gray-800 { color: #ffffff !important; }
+        html:not(.dark) button.bg-amber-500:hover { background: #d97706 !important; }
+        html:not(.dark) button.bg-gray-800:hover { background: #374151 !important; }
         html:not(.dark) .text-gray-300 { color: #334155; }
         html:not(.dark) .text-gray-400 { color: #475569; }
         html:not(.dark) .text-gray-500 { color: #64748b; }

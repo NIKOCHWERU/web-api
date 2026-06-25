@@ -111,12 +111,16 @@
         </div>
     </div>
 
-    <!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢Â        <!-- Ã¢ÂÂÃ¢ÂÂ PREVIEW WINDOW (Full Article Preview) Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- RIGHT COLUMN (30%)                                                 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="w-full lg:w-4/12 flex flex-col gap-6">
+
+        <!-- ── PREVIEW WINDOW (Full Article Preview) ───────────────────── -->
         <div id="previewWindow" class="win-window shadow-2xl shadow-black/50" style="display: none; width: 780px; height: 85vh;">
 
             <!-- Window Title Bar -->
             <div class="win-titlebar">
-                <span class="win-titlebar-icon">Ã°ÂÂÂ</span>
                 <span class="win-titlebar-title">Preview Artikel Ã¢ÂÂ <span x-text="title || 'Artikel Baru'"></span></span>
 
                 <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">

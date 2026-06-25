@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 // ── Public API routes (existing) ────────────────────────────────────────────
 Route::get('/', function () {
-    return response()->json(['status' => 'Narasumber Hukum API', 'version' => '2.0']);
+    return redirect()->route('admin.dashboard');
 });
 
 // ── Admin Auth ───────────────────────────────────────────────────────────────

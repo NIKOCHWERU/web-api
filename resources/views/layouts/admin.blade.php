@@ -46,12 +46,13 @@
     </style>
     @livewireStyles
 </head>
-<body class="bg-gray-950 text-gray-100 flex">
+<body class="bg-gray-950 text-gray-100 flex" x-data="{ sidebarOpen: true }">
 
     <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
-    <aside class="sidebar bg-gray-900 border-r border-gray-800 flex flex-col fixed top-0 left-0 h-full z-30">
+    <aside class="sidebar bg-gray-900 border-r border-gray-800 flex flex-col fixed top-0 left-0 h-full z-30 transition-transform duration-300"
+           :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}">
         <!-- Brand -->
-        <div class="px-6 py-5 border-b border-gray-800">
+        <div class="px-6 py-5 border-b border-gray-800 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-lg bg-amber-500 flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -63,6 +64,9 @@
                     <p class="text-xs text-amber-400 font-medium">Hukum Admin</p>
                 </div>
             </div>
+            <button @click="sidebarOpen = false" class="lg:hidden text-gray-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
         </div>
 
         <!-- Navigation -->
@@ -101,6 +105,7 @@
         <!-- User Card -->
         <div class="px-3 pb-4 border-t border-gray-800 pt-4">
             <div class="flex items-center gap-3 px-3 py-2">
+                @if(auth()->check())
                 <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-bold uppercase">
                     {{ substr(auth()->user()->name, 0, 1) }}
                 </div>
@@ -114,20 +119,27 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                     </button>
                 </form>
+                @endif
             </div>
         </div>
     </aside>
 
     <!-- ── Main Content ─────────────────────────────────────────────────── -->
-    <div class="flex-1 flex flex-col min-h-screen" style="margin-left: 260px;">
+    <div class="flex-1 flex flex-col min-h-screen transition-all duration-300"
+         :class="{'ml-[260px]': sidebarOpen, 'ml-0': !sidebarOpen}">
         <!-- Header -->
         <header class="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
-            <div>
-                <nav class="text-sm text-gray-400 flex items-center gap-2">
-                    <a href="{{ route('admin.dashboard') }}" class="hover:text-amber-400">Admin</a>
-                    @yield('breadcrumb')
-                </nav>
-                <h1 class="text-xl font-bold text-white mt-0.5">@yield('page-title', 'Dashboard')</h1>
+            <div class="flex items-center gap-4">
+                <button @click="sidebarOpen = !sidebarOpen" class="text-gray-400 hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div>
+                    <nav class="text-sm text-gray-400 flex items-center gap-2">
+                        <a href="{{ route('admin.dashboard') }}" class="hover:text-amber-400">Admin</a>
+                        @yield('breadcrumb')
+                    </nav>
+                    <h1 class="text-xl font-bold text-white mt-0.5">@yield('page-title', 'Dashboard')</h1>
+                </div>
             </div>
             <div class="flex items-center gap-3">
                 @yield('header-actions')
@@ -136,6 +148,7 @@
 
         <!-- Content -->
         <main class="flex-1 p-6">
+            {{ $slot ?? '' }}
             @yield('content')
         </main>
     </div>

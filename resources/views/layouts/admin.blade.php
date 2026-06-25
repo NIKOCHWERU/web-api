@@ -152,6 +152,17 @@
         html:not(.dark) .ql-editor { color: #0f172a; }
         html:not(.dark) input, html:not(.dark) select, html:not(.dark) textarea { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
         html:not(.dark) input::placeholder, html:not(.dark) textarea::placeholder { color: #94a3b8 !important; }
+        html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(16, 185, 129, 0.15) !important; }
+        html:not(.dark) .text-emerald-400 { color: #047857 !important; }
+        html:not(.dark) .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.15) !important; }
+        html:not(.dark) .bg-amber-500\/20 { background-color: rgba(245, 158, 11, 0.2) !important; }
+        html:not(.dark) .text-amber-400 { color: #b45309 !important; }
+        html:not(.dark) .bg-gray-500\/10 { background-color: rgba(107, 114, 128, 0.15) !important; }
+        html:not(.dark) .text-gray-400 { color: #334155 !important; }
+        html:not(.dark) .text-emerald-500 { color: #059669 !important; }
+        html:not(.dark) .border-emerald-500\/20 { border-color: rgba(16, 185, 129, 0.3) !important; }
+        html:not(.dark) .border-amber-500\/30 { border-color: rgba(245, 158, 11, 0.3) !important; }
+        html:not(.dark) .border-gray-500\/20 { border-color: rgba(107, 114, 128, 0.3) !important; }
     </style>
     @livewireStyles
 </head>
@@ -305,7 +316,7 @@
     </aside>
 
     <!-- ══ MAIN CONTENT ══════════════════════════════════════════════════════ -->
-    <div id="main-content" class="flex flex-col min-h-screen flex-1 overflow-auto">
+    <div id="main-content" class="flex flex-col h-screen flex-1 overflow-hidden">
 
         <!-- Header -->
         <header class="bg-gray-900 border-b border-gray-800 px-5 py-3 flex items-center justify-between sticky top-0 z-20 h-14 shrink-0">
@@ -335,7 +346,7 @@
         </header>
 
         <!-- Content -->
-        <main class="flex-1 p-6 overflow-auto">
+        <main class="flex-1 p-6 overflow-y-auto">
             @hasSection('content')
                 @yield('content')
             @else

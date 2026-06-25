@@ -51,8 +51,12 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
+            width: 380px;
+            height: 500px;
             min-width: 320px;
             min-height: 200px;
+            max-width: 95vw;
+            max-height: 85vh;
             resize: both;
             overflow: hidden;
         }

@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Apply theme BEFORE render to prevent flash -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('theme');
+            if (theme !== 'light') {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
     <title>@yield('title', 'Admin') — Narasumber Hukum</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,11 +244,6 @@
         } else {
             document.getElementById('main-content').style.marginLeft = '260px';
         }
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
       ">
 
     <!-- ══ SIDEBAR ══════════════════════════════════════════════════════════ -->
@@ -325,6 +329,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
                 <span class="nav-label">Users</span>
+            </a>
+
+            {{-- Profile --}}
+            <a href="{{ route('admin.profile') }}" data-label="Profile"
+               class="nav-item flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all
+                      {{ request()->routeIs('admin.profile*') ? 'bg-amber-500/10 text-amber-400 border-r-2 border-amber-500' : 'text-gray-400 hover:text-white hover:bg-gray-800' }}">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <span class="nav-label">Profile</span>
             </a>
         </nav>
 
@@ -461,6 +475,9 @@
             }
         };
 
+        const TITLEBAR_HEIGHT = 36;
+        const MARGIN = 8;
+
         // Event delegation for dragging
         document.addEventListener('mousedown', function(e) {
             const titlebar = e.target.closest('.win-titlebar');
@@ -492,8 +509,13 @@
 
         document.addEventListener('mousemove', function(e) {
             if (isDragging && activeWindow) {
-                activeWindow.style.top  = (e.clientY - dragOffsetY) + 'px';
-                activeWindow.style.left = (e.clientX - dragOffsetX) + 'px';
+                var winW = activeWindow.offsetWidth;
+                var winH = activeWindow.offsetHeight;
+                // Clamp so titlebar always stays on screen
+                var newTop  = Math.max(0, Math.min(e.clientY - dragOffsetY, window.innerHeight - TITLEBAR_HEIGHT));
+                var newLeft = Math.max(-(winW - MARGIN * 2 - 46 * 3), Math.min(e.clientX - dragOffsetX, window.innerWidth - MARGIN));
+                activeWindow.style.top  = newTop + 'px';
+                activeWindow.style.left = newLeft + 'px';
             }
         });
 
@@ -508,10 +530,10 @@
         // Setup initial position of windows
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.win-window').forEach(function(win) {
-                if (!win.style.top) {
-                    win.style.top  = '100px';
-                    win.style.left = (window.innerWidth - 420) + 'px';
-                    if (win.style.left < 0) win.style.left = '20px';
+                if (!win.style.top || win.style.top === '0px') {
+                    win.style.top  = '80px';
+                    var left = Math.max(20, (window.innerWidth - 420) / 2);
+                    win.style.left = left + 'px';
                 }
             });
         });

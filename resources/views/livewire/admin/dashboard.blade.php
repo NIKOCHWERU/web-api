@@ -56,14 +56,48 @@
         </div>
     </div>
 
-    <!-- Chart & Activity Row -->
+    <!-- Weekly Stats & Activity Row -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <!-- Traffic Chart -->
+        <!-- Weekly Reader Statistics -->
         <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-5 shadow-lg">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-sm font-semibold text-white">Views Traffic (Top Articles)</h2>
+            <div class="flex justify-between items-center mb-5">
+                <div>
+                    <h2 class="text-sm font-semibold text-white">Statistik Pembaca</h2>
+                    <p class="text-xs text-gray-500 mt-0.5">7 hari terakhir — artikel paling banyak dibaca</p>
+                </div>
+                <span class="text-xs text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full font-medium">1 Minggu</span>
             </div>
-            <div id="trafficChart" class="w-full h-72"></div>
+
+            @php
+                $maxViews = $weeklyTopArticles->max('views') ?: 1;
+            @endphp
+
+            @forelse($weeklyTopArticles as $i => $article)
+                <div class="mb-3.5">
+                    <div class="flex items-center justify-between mb-1">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <span class="text-[10px] font-mono text-gray-600 w-4 shrink-0">{{ $i + 1 }}</span>
+                            <p class="text-xs text-gray-300 truncate">{{ Str::limit($article->title, 48) }}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 ml-3 shrink-0">
+                            <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            <span class="text-xs font-bold text-white">{{ number_format($article->views) }}</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+                        @php
+                            $colors = ['bg-amber-500','bg-orange-500','bg-emerald-500','bg-blue-500','bg-purple-500'];
+                            $pct = round(($article->views / $maxViews) * 100);
+                        @endphp
+                        <div class="{{ $colors[$i % 5] }} h-1.5 rounded-full transition-all" style="width: {{ $pct }}%"></div>
+                    </div>
+                </div>
+            @empty
+                <div class="py-12 text-center text-gray-500 text-sm">
+                    <svg class="w-10 h-10 mx-auto mb-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Belum ada data pembaca.
+                </div>
+            @endforelse
         </div>
 
         <!-- Real-Time Activity Feed -->
@@ -74,7 +108,7 @@
                     <h2 class="text-sm font-semibold text-white">Live Activity</h2>
                 </div>
             </div>
-            <div class="divide-y divide-gray-800 overflow-y-auto max-h-72" wire:poll.5s>
+            <div class="divide-y divide-gray-800 overflow-y-auto max-h-72">
                 @forelse($recentActivities as $activity)
                     <div class="px-5 py-3 hover:bg-gray-800/30 transition">
                         <div class="flex gap-3">
@@ -182,68 +216,4 @@
     </div>
 </div>
 
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-    document.addEventListener('livewire:init', () => {
-        const topArticles = @json($topArticles);
-        
-        if (topArticles.length > 0) {
-            const labels = topArticles.map(a => a.title.length > 30 ? a.title.substring(0, 30) + '...' : a.title);
-            const data = topArticles.map(a => a.views);
 
-            const options = {
-                series: [{
-                    name: 'Views',
-                    data: data
-                }],
-                chart: {
-                    type: 'bar',
-                    height: 280,
-                    toolbar: { show: false },
-                    background: 'transparent',
-                    fontFamily: 'inherit'
-                },
-                plotOptions: {
-                    bar: {
-                        borderRadius: 4,
-                        horizontal: false,
-                        columnWidth: '40%',
-                    }
-                },
-                colors: ['#f59e0b'], // Amber-500
-                dataLabels: { enabled: false },
-                xaxis: {
-                    categories: labels,
-                    labels: {
-                        style: { colors: '#9ca3af', fontSize: '10px' }
-                    },
-                    axisBorder: { show: false },
-                    axisTicks: { show: false }
-                },
-                yaxis: {
-                    labels: {
-                        style: { colors: '#9ca3af' },
-                        formatter: (val) => { return Math.round(val) }
-                    }
-                },
-                grid: {
-                    borderColor: '#374151',
-                    strokeDashArray: 4,
-                    yaxis: { lines: { show: true } }
-                },
-                theme: { mode: 'dark' },
-                tooltip: {
-                    theme: 'dark',
-                    y: { formatter: function (val) { return val + " views" } }
-                }
-            };
-
-            const chart = new ApexCharts(document.querySelector("#trafficChart"), options);
-            chart.render();
-        } else {
-            document.querySelector("#trafficChart").innerHTML = '<div class="h-full flex items-center justify-center text-gray-500 text-sm">No data available for chart.</div>';
-        }
-    });
-</script>
-@endpush

@@ -58,46 +58,30 @@
 
     <!-- Weekly Stats & Activity Row -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <!-- Weekly Reader Statistics -->
+        <!-- Weekly Reader Chart (Chart.js grouped bar) -->
         <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-5 shadow-lg">
-            <div class="flex justify-between items-center mb-5">
+            <div class="flex justify-between items-center mb-4">
                 <div>
-                    <h2 class="text-sm font-semibold text-white">Statistik Pembaca</h2>
-                    <p class="text-xs text-gray-500 mt-0.5">7 hari terakhir — artikel paling banyak dibaca</p>
+                    <h2 class="text-sm font-semibold text-white">Statistik Pembaca Mingguan</h2>
+                    <p class="text-xs text-gray-500 mt-0.5">Views per hari — 7 hari terakhir</p>
                 </div>
                 <span class="text-xs text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full font-medium">1 Minggu</span>
             </div>
 
-            @php
-                $maxViews = $weeklyTopArticles->max('views') ?: 1;
-            @endphp
+            <canvas id="weeklyChart" height="200"></canvas>
 
-            @forelse($weeklyTopArticles as $i => $article)
-                <div class="mb-3.5">
-                    <div class="flex items-center justify-between mb-1">
-                        <div class="flex items-center gap-2 min-w-0 flex-1">
-                            <span class="text-[10px] font-mono text-gray-600 w-4 shrink-0">{{ $i + 1 }}</span>
-                            <p class="text-xs text-gray-300 truncate">{{ Str::limit($article->title, 48) }}</p>
-                        </div>
-                        <div class="flex items-center gap-1.5 ml-3 shrink-0">
-                            <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                            <span class="text-xs font-bold text-white">{{ number_format($article->views) }}</span>
-                        </div>
+            {{-- Legend --}}
+            <div class="flex flex-wrap gap-x-4 gap-y-2 mt-4">
+                @php
+                    $chartColors = ['#f59e0b','#10b981','#3b82f6','#a855f7','#ef4444'];
+                @endphp
+                @foreach($weeklyTopArticles as $i => $article)
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:{{ $chartColors[$i % 5] }}"></span>
+                        <span class="text-[10px] text-gray-400 truncate max-w-[140px]">{{ Str::limit($article->title, 28) }}</span>
                     </div>
-                    <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
-                        @php
-                            $colors = ['bg-amber-500','bg-orange-500','bg-emerald-500','bg-blue-500','bg-purple-500'];
-                            $pct = round(($article->views / $maxViews) * 100);
-                        @endphp
-                        <div class="{{ $colors[$i % 5] }} h-1.5 rounded-full transition-all" style="width: {{ $pct }}%"></div>
-                    </div>
-                </div>
-            @empty
-                <div class="py-12 text-center text-gray-500 text-sm">
-                    <svg class="w-10 h-10 mx-auto mb-3 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    Belum ada data pembaca.
-                </div>
-            @endforelse
+                @endforeach
+            </div>
         </div>
 
         <!-- Real-Time Activity Feed -->
@@ -216,4 +200,80 @@
     </div>
 </div>
 
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+    var labels  = @json($chartLabels);
+    var series  = @json($chartSeries);
+    var colors  = ['#f59e0b','#10b981','#3b82f6','#a855f7','#ef4444'];
 
+    var datasets = series.map(function(s, i) {
+        var base = colors[i % colors.length];
+        return {
+            label:           s.label,
+            data:            s.data,
+            backgroundColor: base + 'cc',   // 80% opacity
+            borderColor:     base,
+            borderWidth:     1.5,
+            borderRadius:    4,
+            borderSkipped:   false,
+        };
+    });
+
+    var isDark = document.documentElement.classList.contains('dark');
+    var gridColor  = isDark ? 'rgba(55,65,81,0.6)'  : 'rgba(203,213,225,0.6)';
+    var tickColor  = isDark ? '#9ca3af' : '#64748b';
+    var tooltipBg  = isDark ? '#1e293b' : '#ffffff';
+    var tooltipTxt = isDark ? '#f1f5f9' : '#0f172a';
+
+    var ctx = document.getElementById('weeklyChart');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: { labels: labels, datasets: datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: tooltipBg,
+                    titleColor: tickColor,
+                    bodyColor:  tooltipTxt,
+                    borderColor: isDark ? '#374151' : '#e2e8f0',
+                    borderWidth: 1,
+                    padding: 10,
+                    callbacks: {
+                        label: function(ctx) {
+                            return '  ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' views';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid:  { display: false },
+                    ticks: { color: tickColor, font: { size: 10 } },
+                    border:{ display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid:  { color: gridColor, drawBorder: false },
+                    ticks: {
+                        color: tickColor,
+                        font:  { size: 10 },
+                        stepSize: 1,
+                        precision: 0,
+                        callback: function(v) { return Number.isInteger(v) ? v : ''; }
+                    },
+                    border:{ display: false }
+                }
+            }
+        }
+    });
+})();
+</script>
+@endpush

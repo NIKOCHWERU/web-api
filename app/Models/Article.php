@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -33,6 +35,11 @@ class Article extends Model
         static::saving(function ($article) {
             $article->is_published = ($article->status === 'published');
         });
+    }
+
+    public function dailyViews(): HasMany
+    {
+        return $this->hasMany(ArticleDailyView::class);
     }
 
     public function category(): BelongsTo
@@ -71,5 +78,18 @@ class Article extends Model
     public function incrementViews(): void
     {
         $this->increment('views');
+
+        // Also log into daily views for chart tracking
+        DB::table('article_daily_views')->upsert(
+            [
+                'article_id' => $this->id,
+                'view_date'  => now()->toDateString(),
+                'views'      => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            ['article_id', 'view_date'],
+            ['views' => DB::raw('article_daily_views.views + 1'), 'updated_at' => now()]
+        );
     }
 }

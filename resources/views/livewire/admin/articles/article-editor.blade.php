@@ -18,9 +18,9 @@
 
 <div x-data="articleEditor()" class="flex flex-col lg:flex-row gap-6 relative">
 
-    <!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
     <!-- LEFT COLUMN (70%)                                                  -->
-    <!-- Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
     <div class="w-full lg:w-8/12 flex flex-col gap-6">
 
         <!-- Section: Title & Slug -->
@@ -121,7 +121,7 @@
 
             <!-- Window Title Bar -->
             <div class="win-titlebar">
-                <span class="win-titlebar-title">Preview Artikel Ã¢ÂÂ <span x-text="title || 'Artikel Baru'"></span></span>
+                <span class="win-titlebar-title">Preview Artikel - <span x-text="title || 'Artikel Baru'"></span></span>
 
                 <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
                     <!-- Open in new tab -->
@@ -147,7 +147,7 @@
                 </div>
             </div>
 
-            <!-- Window Content Ã¢ÂÂ Full Article Preview -->
+            <!-- Window Content — Full Article Preview -->
             <div class="win-body" style="overflow-y:auto; background:#fff; color:#1a1a1a;">
 
                 <!-- Hero Image -->
@@ -194,11 +194,11 @@
                             <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=f59e0b&color=fff&bold=true" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
                             <span style="font-weight:500;color:#374151;">{{ auth()->user()->name }}</span>
                         </div>
-                        <span>Ã¢ÂÂ¢</span>
+                        <span>&bull;</span>
                         <span>{{ now()->format('d M Y') }}</span>
-                        <span>Ã¢ÂÂ¢</span>
+                        <span>&bull;</span>
                         <span x-text="Math.max(1, Math.ceil(wordCount/200)) + ' menit baca'"></span>
-                        <span>Ã¢ÂÂ¢</span>
+                        <span>&bull;</span>
                         <span x-text="wordCount + ' kata'"></span>
                     </div>
 
@@ -231,7 +231,7 @@
             </div>
         </div>
 
-        <!-- Ã¢ÂÂÃ¢ÂÂ Publish Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+        <!-- ── Publish ─────────────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-800 bg-gray-950/30">
                 <h3 class="text-sm font-semibold text-white">Publish</h3>
@@ -266,7 +266,7 @@
             </div>
         </div>
 
-        <!-- Ã¢ÂÂÃ¢ÂÂ Categorization Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+        <!-- ── Categorization ──────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-800 bg-gray-950/30">
                 <h3 class="text-sm font-semibold text-white">Categorization</h3>
@@ -288,7 +288,7 @@
                         @foreach($tags as $index => $tag)
                             <span class="inline-flex items-center gap-1 bg-amber-500/20 text-amber-400 text-xs px-2 py-0.5 rounded-full">
                                 #{{ $tag }}
-                                <button type="button" wire:click="removeTag({{ $index }})" class="hover:text-red-400 leading-none">ÃÂ</button>
+                                <button type="button" wire:click="removeTag({{ $index }})" class="hover:text-red-400 leading-none">×</button>
                             </span>
                         @endforeach
                         <input type="text"
@@ -300,7 +300,7 @@
             </div>
         </div>
 
-        <!-- Ã¢ÂÂÃ¢ÂÂ Featured Image Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+        <!-- ── Featured Image ──────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-800 bg-gray-950/30">
                 <h3 class="text-sm font-semibold text-white">Featured Image</h3>
@@ -310,23 +310,23 @@
                     <input type="file" wire:model="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
                     @if($image)
                         <img src="{{ $image->temporaryUrl() }}" class="w-24 h-24 object-cover rounded-lg mb-2 shadow-lg">
-                        <p class="text-xs text-amber-500 font-medium">Image selected Ã¢ÂÂ</p>
+                        <p class="text-xs text-amber-500 font-medium">Image selected ✓</p>
                     @elseif($this->getExistingImageUrl())
                         <img src="{{ $this->getExistingImageUrl() }}" class="w-24 h-24 object-cover rounded-lg mb-2 shadow-lg">
                         <p class="text-xs text-gray-400">Click to change</p>
                     @else
                         <svg class="w-8 h-8 text-gray-500 mb-2 group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                         <p class="text-xs font-medium text-white mb-1">Drag & Drop or Click</p>
-                        <p class="text-[10px] text-gray-500">PNG, JPG, WEBP Ã¢ÂÂ max 2MB</p>
+                        <p class="text-[10px] text-gray-500">PNG, JPG, WEBP — max 2MB</p>
                     @endif
                 </div>
                 <div wire:loading wire:target="image" class="text-amber-500 text-xs mt-2 font-medium text-center">
-                    Ã¢ÂÂ³ Uploading...
+                    ⌛ Uploading...
                 </div>
             </div>
         </div>
 
-        <!-- Ã¢ÂÂÃ¢ÂÂ SEO Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+        <!-- ── SEO ─────────────────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-800 bg-gray-950/30">
                 <h3 class="text-sm font-semibold text-white">SEO</h3>
@@ -378,7 +378,7 @@
             </div>
         </div>
 
-        <!-- Ã¢ÂÂÃ¢ÂÂ Statistics Widget Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ -->
+        <!-- ── Statistics Widget ────────────────────────────────────────── -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
             <div class="px-5 py-3 border-b border-gray-800 bg-gray-950/30">
                 <h3 class="text-sm font-semibold text-white">Statistics</h3>
@@ -401,7 +401,7 @@
 @push('scripts')
 <script>
 (function() {
-    // Register articleEditor BEFORE Alpine starts Ã¢ÂÂ use document.addEventListener('alpine:init')
+    // Register articleEditor BEFORE Alpine starts — use document.addEventListener('alpine:init')
     // @@entangle works here because Livewire compiles this Blade view first
     function registerArticleEditor() {
         if (typeof Alpine === 'undefined') {

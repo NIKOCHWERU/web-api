@@ -117,35 +117,33 @@
     <div class="w-full lg:w-4/12 flex flex-col gap-6">
 
         <!-- ── PREVIEW WINDOW (Full Article Preview) ───────────────────── -->
-        <div id="previewWindow" class="win-window shadow-2xl shadow-black/50 overflow-hidden resize bg-white dark:bg-gray-900 border border-gray-700 rounded-xl" style="display: none; position: fixed; z-index: 9999; top: 10vh; left: calc(50% - 390px); width: 780px; height: 85vh; max-width: 90vw; max-height: 90vh;">
+        <div id="previewWindow" class="win-window shadow-2xl shadow-black/50 overflow-hidden resize bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl flex flex-col" style="display: none; position: fixed; z-index: 9999; top: 10vh; left: calc(50% - 390px); width: 780px; height: 85vh; max-width: 90vw; max-height: 90vh;">
 
             <!-- Window Title Bar -->
-            <div class="win-titlebar">
-                <span class="win-titlebar-title">Preview Artikel - <span x-text="title || 'Artikel Baru'"></span></span>
+            <div class="win-titlebar flex items-center justify-between bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2.5 cursor-move select-none w-full">
+                <span class="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-1.5 truncate max-w-[70%]">
+                    <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    Preview: <span class="font-bold text-gray-900 dark:text-white truncate" x-text="title || 'Artikel Baru'"></span>
+                </span>
 
-                <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
+                <div class="flex items-center gap-3">
                     <!-- Open in new tab (Live Preview) -->
-                    <button type="button" onclick="openFullPreview()" class="win-btn text-gray-400 hover:text-white" title="Open in New Tab" style="display:flex;align-items:center;">
-                        <svg viewBox="0 0 14 14" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M6 2H2v10h10V8M8 1h5v5M13 1L7 7"/>
+                    <button type="button" onclick="openFullPreview()" class="p-1.5 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition flex items-center" title="Open in New Tab">
+                        <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
                     </button>
-                    <div class="win-controls">
-                        <button onclick="WinManager.minimize('previewWindow')" class="win-btn win-btn-min text-gray-400 hover:text-white" title="Minimize">
-                            <svg viewBox="0 0 10 10"><path d="M0 5h10v1H0z" fill="currentColor"/></svg>
-                        </button>
-                        <button onclick="WinManager.maximize('previewWindow')" class="win-btn win-btn-max text-gray-400 hover:text-white" title="Maximize">
-                            <svg viewBox="0 0 10 10"><path d="M0 0v10h10V0H0zm1 1h8v8H1V1z" fill="currentColor"/></svg>
-                        </button>
-                        <button onclick="WinManager.close('previewWindow')" class="win-btn win-btn-close text-gray-400 hover:text-white" title="Close">
-                            <svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
-                        </button>
+                    <div class="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    <div class="win-controls flex items-center gap-1.5">
+                        <button onclick="WinManager.minimize('previewWindow')" class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition" title="Minimize"></button>
+                        <button onclick="WinManager.maximize('previewWindow')" class="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition" title="Maximize"></button>
+                        <button onclick="WinManager.close('previewWindow')" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition" title="Close"></button>
                     </div>
                 </div>
             </div>
 
             <!-- Window Content — Full Article Preview -->
-            <div class="win-body" style="overflow-y:auto; background:#fff; color:#1a1a1a;">
+            <div class="win-body flex-1 overflow-y-auto bg-white text-gray-900">
 
                 <!-- Hero Image -->
                 <div style="width:100%;height:280px;background:#e5e7eb;overflow:hidden;position:relative;">

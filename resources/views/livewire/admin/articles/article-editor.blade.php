@@ -35,7 +35,7 @@
             <div class="p-6 flex flex-col md:flex-row gap-5">
                 <div class="flex-1">
                     <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Article Title</label>
-                    <input type="text" wire:model.live.debounce.500ms="title" x-model="title"
+                    <input type="text" wire:model.live.debounce.500ms="title"
                            class="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors"
                            placeholder="Enter an engaging title...">
                     @error('title') <span class="text-error-500 text-xs mt-1.5 block font-medium">{{ $message }}</span> @enderror
@@ -59,7 +59,7 @@
                 <h3 class="text-sm font-semibold text-gray-800 dark:text-white/90">Article Summary</h3>
             </div>
             <div class="p-6">
-                <textarea wire:model.live="summary" x-model="summary" rows="3"
+                <textarea wire:model.live="summary" rows="3"
                           class="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-3 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors resize-y"
                           placeholder="Write a short, engaging summary..."></textarea>
             </div>
@@ -330,7 +330,7 @@
                 </div>
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Focus Keyword</label>
-                    <input type="text" wire:model.live.debounce.500ms="focus_keyword" x-model="keyword"
+                    <input type="text" wire:model.live.debounce.500ms="focus_keyword"
                            class="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 transition-colors">
                 </div>
                 
@@ -383,12 +383,12 @@
             return;
         }
         Alpine.data('articleEditor', () => ({
-            title: @entangle('title'),
-            summary: @entangle('summary'),
-            keyword: @entangle('focus_keyword'),
+            title: @entangle('title').live,
+            summary: @entangle('summary').live,
+            keyword: @entangle('focus_keyword').live,
             contentHtml: '',
             wordCount: 0,
-
+            
             get seoScore() {
                 let score = 15;
                 const kw = (this.keyword || '').toLowerCase();
@@ -469,7 +469,7 @@
             }
         });
 
-        const existingContent = `{!! addslashes($content ?? '') !!}`;
+        const existingContent = {!! json_encode($content ?? '') !!};
         if (existingContent) quill.root.innerHTML = existingContent;
 
         const previewEl = document.getElementById('preview-content');

@@ -409,9 +409,9 @@
             return;
         }
         Alpine.data('articleEditor', () => ({
-            get title() { return this.$wire.title; },
-            get summary() { return this.$wire.summary; },
-            get keyword() { return this.$wire.focus_keyword; },
+            title: @entangle('title').live,
+            summary: @entangle('summary').live,
+            keyword: @entangle('focus_keyword').live,
             contentHtml: '',
             wordCount: 0,
 

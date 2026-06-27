@@ -441,15 +441,58 @@
             theme: 'snow',
             placeholder: 'Tulis isi artikel di sini...',
             modules: {
-                toolbar: [
-                    [{ 'header': [1,2,3,4,5,6,false] }],
-                    ['bold','italic','underline','strike'],
-                    ['blockquote','code-block'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    [{ 'align': [] }],
-                    ['link','image','video'],
-                    ['clean']
-                ]
+                toolbar: {
+                    container: [
+                        [{ 'header': [1,2,3,4,5,6,false] }],
+                        ['bold','italic','underline','strike'],
+                        ['blockquote','code-block'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ['link','image','video'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        image: function() {
+                            const input = document.createElement('input');
+                            input.setAttribute('type', 'file');
+                            input.setAttribute('accept', 'image/*');
+                            input.click();
+                            input.onchange = () => {
+                                const file = input.files[0];
+                                if (!file) return;
+
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                    const img = new Image();
+                                    img.onload = () => {
+                                        const canvas = document.createElement('canvas');
+                                        let width = img.width;
+                                        let height = img.height;
+                                        const MAX_WIDTH = 1000;
+
+                                        if (width > MAX_WIDTH) {
+                                            height = Math.round((height * MAX_WIDTH) / width);
+                                            width = MAX_WIDTH;
+                                        }
+
+                                        canvas.width = width;
+                                        canvas.height = height;
+                                        const ctx = canvas.getContext('2d');
+                                        ctx.drawImage(img, 0, 0, width, height);
+
+                                        // Compress to JPEG 70% to prevent Nginx 413 error
+                                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                                        const range = quill.getSelection(true);
+                                        quill.insertEmbed(range.index, 'image', dataUrl);
+                                        quill.setSelection(range.index + 1);
+                                    };
+                                    img.src = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+                            };
+                        }
+                    }
+                }
             }
         });
 

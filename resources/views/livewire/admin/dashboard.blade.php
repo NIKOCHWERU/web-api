@@ -213,11 +213,13 @@
         return {
             label:           s.label,
             data:            s.data,
-            backgroundColor: base + 'cc',   // 80% opacity
             borderColor:     base,
-            borderWidth:     1.5,
-            borderRadius:    4,
-            borderSkipped:   false,
+            backgroundColor: base,
+            borderWidth:     2,
+            tension:         0.4,       // smooth curves
+            pointRadius:     4,
+            pointHoverRadius: 6,
+            fill:            false
         };
     });
 
@@ -231,7 +233,7 @@
     if (!ctx) return;
 
     new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: { labels: labels, datasets: datasets },
         options: {
             responsive: true,

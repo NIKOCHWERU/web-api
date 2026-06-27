@@ -22,11 +22,11 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-2">Foto Profil</label>
                     <div class="flex items-center gap-4">
-                        <div class="relative w-16 h-16 rounded-full overflow-hidden bg-gray-800 border-2 border-gray-700 flex-shrink-0">
+                        <div class="relative bg-gray-800 border-2 border-gray-700 flex-shrink-0" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden;">
                             @if ($photo)
-                                <img src="{{ $photo->temporaryUrl() }}" class="w-full h-full object-cover">
+                                <img src="{{ $photo->temporaryUrl() }}" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
-                                <img src="{{ auth()->user()->profile_photo_url }}" class="w-full h-full object-cover">
+                                <img src="{{ auth()->user()->profile_photo_url }}" style="width: 100%; height: 100%; object-fit: cover;">
                             @endif
                         </div>
                         <div class="flex-1">

@@ -398,14 +398,18 @@
         </div>
     </div>
 
-    <!-- ── Preview Window (Draggable) ────────────────────────────────────────── -->
-    <div id="previewWindow" class="win-window hidden flex-col absolute z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-lg overflow-hidden w-[800px] h-[600px] max-w-[90vw] max-h-[90vh]" style="top: 80px; left: 50%; transform: translateX(-50%);">
+    <!-- ── Preview Window (Draggable & Resizable) ────────────────────────────────────────── -->
+    <div id="previewWindow" class="win-window hidden flex-col absolute z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-lg overflow-hidden w-[800px] h-[600px] max-w-[90vw] max-h-[90vh] resize" style="top: 80px; left: calc(50% - 400px);">
         <div class="win-titlebar bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2 flex justify-between items-center cursor-move select-none">
             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Preview Artikel</h3>
-            <div class="win-controls flex gap-2">
-                <button onclick="WinManager.minimize('previewWindow')" class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 focus:outline-none"></button>
-                <button onclick="WinManager.maximize('previewWindow')" class="w-3 h-3 rounded-full bg-emerald-500 hover:bg-emerald-400 focus:outline-none"></button>
-                <button onclick="WinManager.close('previewWindow')" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 focus:outline-none"></button>
+            <div class="win-controls flex items-center gap-3">
+                <button onclick="openPreviewInNewTab()" title="View in New Tab" class="text-gray-500 hover:text-blue-500 flex items-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </button>
+                <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                <button onclick="WinManager.minimize('previewWindow')" class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 focus:outline-none" title="Minimize"></button>
+                <button onclick="WinManager.maximize('previewWindow')" class="w-3 h-3 rounded-full bg-emerald-500 hover:bg-emerald-400 focus:outline-none" title="Maximize"></button>
+                <button onclick="WinManager.close('previewWindow')" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 focus:outline-none" title="Close"></button>
             </div>
         </div>
         <div class="flex-1 overflow-y-auto p-8 bg-white dark:bg-gray-900">
@@ -563,6 +567,30 @@
         if (previewContent) {
             previewContent.innerHTML = html;
         }
+    };
+
+    window.openPreviewInNewTab = function() {
+        const previewContent = document.getElementById('previewContent');
+        if (!previewContent) return;
+        const html = previewContent.innerHTML;
+        const newWindow = window.open();
+        newWindow.document.write(`
+            <html>
+            <head>
+                <title>Preview Artikel</title>
+                <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+                <style>
+                    body { padding: 40px; background: #fff; color: #333; }
+                </style>
+            </head>
+            <body>
+                <div class="prose max-w-4xl mx-auto">
+                    ${html}
+                </div>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
     };
 
     // Flatpickr

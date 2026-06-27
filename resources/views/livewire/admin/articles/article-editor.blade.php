@@ -398,6 +398,23 @@
         </div>
     </div>
 
+    <!-- ── Preview Window (Draggable) ────────────────────────────────────────── -->
+    <div id="previewWindow" class="win-window hidden flex-col absolute z-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-2xl rounded-lg overflow-hidden w-[800px] h-[600px] max-w-[90vw] max-h-[90vh]" style="top: 80px; left: 50%; transform: translateX(-50%);">
+        <div class="win-titlebar bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-2 flex justify-between items-center cursor-move select-none">
+            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Preview Artikel</h3>
+            <div class="win-controls flex gap-2">
+                <button onclick="WinManager.minimize('previewWindow')" class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 focus:outline-none"></button>
+                <button onclick="WinManager.maximize('previewWindow')" class="w-3 h-3 rounded-full bg-emerald-500 hover:bg-emerald-400 focus:outline-none"></button>
+                <button onclick="WinManager.close('previewWindow')" class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 focus:outline-none"></button>
+            </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-8 bg-white dark:bg-gray-900">
+            <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none" id="previewContent">
+                <!-- Preview content injected here by updatePreview() -->
+            </div>
+        </div>
+    </div>
+
 @push('scripts')
 <script>
 (function() {
@@ -539,6 +556,14 @@
             } catch(e) { /* silent */ }
         });
     });
+
+    // Function to update the Live Preview window
+    window.updatePreview = function(html) {
+        const previewContent = document.getElementById('previewContent');
+        if (previewContent) {
+            previewContent.innerHTML = html;
+        }
+    };
 
     // Flatpickr
     document.addEventListener('DOMContentLoaded', () => {

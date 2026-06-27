@@ -1,7 +1,6 @@
 <div class="relative" x-data="{
     dropdownOpen: false,
-    unreadCount: @entangle('unreadCount').live,
-    get notifying() { return this.unreadCount > 0; },
+    get notifying() { return $wire.unreadCount > 0; },
     toggleDropdown() {
         this.dropdownOpen = !this.dropdownOpen;
         if (this.dropdownOpen) {

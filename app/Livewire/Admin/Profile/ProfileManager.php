@@ -31,8 +31,8 @@ class ProfileManager extends Component
 
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'image', 'max:2048'], // 2MB Max
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
+            'photo' => ['nullable', 'image', 'max:10240'], // 10MB Max
         ]);
 
         if ($this->photo) {

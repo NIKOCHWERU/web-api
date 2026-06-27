@@ -44,7 +44,7 @@
                                     <span>Choose File</span>
                                     <input type="file" wire:model="photo" class="sr-only">
                                 </label>
-                                <p class="mt-1.5 text-xs text-gray-500">SVG, PNG, JPG or WEBP (max 1MB)</p>
+                                <p class="mt-1.5 text-xs text-gray-500">SVG, PNG, JPG or WEBP (max 10MB)</p>
                                 @error('photo') <span class="text-xs font-medium text-error-500 mt-1 block">{{ $message }}</span> @enderror
                             </div>
                         </div>

@@ -115,7 +115,7 @@ class ArticleEditor extends Component
             'content' => 'required',
             'status' => 'required|in:draft,review,published',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:10240', // 10MB Max
         ]);
 
         $data = [

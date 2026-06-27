@@ -522,7 +522,7 @@
 
             // Sync to Livewire
             try {
-                const wireEl = document.querySelector('[wire\\:id]');
+                const wireEl = document.getElementById('quill-editor').closest('[wire\\:id]');
                 if (wireEl) {
                     const wireId = wireEl.getAttribute('wire:id');
                     const component = Livewire.find(wireId);

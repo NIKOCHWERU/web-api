@@ -58,7 +58,7 @@
                             <ul class="flex flex-col gap-1">
                                 @foreach($results['categories'] as $category)
                                     <li>
-                                        <a href="{{ route('admin.categories') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5 transition-colors">
+                                        <a href="{{ route('admin.categories.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5 transition-colors">
                                             <div class="flex-1 truncate">
                                                 <p class="truncate font-medium">{{ $category->name }}</p>
                                             </div>
@@ -68,14 +68,14 @@
                             </ul>
                         </div>
                     @endif
-
+ 
                     @if(count($results['users']) > 0)
                         <div class="mb-3 last:mb-0">
                             <h6 class="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Users</h6>
                             <ul class="flex flex-col gap-1">
                                 @foreach($results['users'] as $user)
                                     <li>
-                                        <a href="{{ route('admin.users') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5 transition-colors">
+                                        <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5 transition-colors">
                                             <div class="w-8 h-8 shrink-0 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                                                 <img src="{{ $user->profile_photo_url }}" class="w-full h-full object-cover">
                                             </div>

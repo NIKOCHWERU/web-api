@@ -32,7 +32,7 @@
                 <div class="flex-1">
                     <label class="block text-xs font-medium text-gray-400 mb-1.5">Title Input</label>
                     <input type="text" wire:model.live.debounce.500ms="title"
-                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-4 py-2 text-sm focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-colors"
+                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-4 py-2 text-sm text-left focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-colors"
                            placeholder="Judul Artikel Menarik...">
                     @error('title') <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
@@ -41,7 +41,7 @@
                     <div class="relative">
                         <span class="absolute left-3 top-2.5 text-xs text-gray-500">slug:</span>
                         <input type="text" wire:model.live="slug"
-                               class="w-full bg-gray-950 border border-gray-800 text-gray-300 rounded-lg pl-11 pr-4 py-2 text-sm focus:border-amber-500 outline-none transition-colors"
+                               class="w-full bg-gray-950 border border-gray-800 text-gray-300 rounded-lg pl-11 pr-4 py-2 text-sm text-left focus:border-amber-500 outline-none transition-colors"
                                placeholder="judul-artikel">
                     </div>
                     @error('slug') <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
@@ -56,7 +56,7 @@
             </div>
             <div class="p-5">
                 <textarea wire:model.live="summary" rows="3"
-                          class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-4 py-3 text-sm focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-colors resize-y"
+                          class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-4 py-3 text-sm text-left focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-colors resize-y"
                           placeholder="Masukkan ringkasan artikel..."></textarea>
             </div>
         </div>
@@ -252,7 +252,7 @@
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1.5">Publish Date</label>
                     <input type="text" wire:model="published_at" id="datePicker"
-                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-4 py-2 text-sm focus:border-amber-500 outline-none">
+                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-4 py-2 text-sm text-left focus:border-amber-500 outline-none">
                 </div>
 
                 <div class="flex gap-2 pt-2">
@@ -335,22 +335,22 @@
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1.5">Meta Title</label>
                     <input type="text" wire:model.live.debounce.500ms="meta_title"
-                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-3 py-2 text-sm focus:border-amber-500 outline-none">
+                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-3 py-2 text-sm text-left focus:border-amber-500 outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1.5">Meta Description</label>
                     <textarea wire:model.live.debounce.500ms="meta_description" rows="2"
-                              class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-3 py-2 text-sm focus:border-amber-500 outline-none resize-none"></textarea>
+                              class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-3 py-2 text-sm text-left focus:border-amber-500 outline-none resize-none"></textarea>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1.5">Focus Keyword</label>
                     <input type="text" wire:model.live.debounce.500ms="focus_keyword"
-                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-3 py-2 text-sm focus:border-amber-500 outline-none">
+                           class="w-full bg-gray-950 border border-gray-800 text-white rounded-lg px-3 py-2 text-sm text-left focus:border-amber-500 outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-400 mb-1.5">Canonical URL</label>
                     <input type="text" wire:model="canonical_url"
-                           class="w-full bg-gray-950 border border-gray-800 text-gray-400 rounded-lg px-3 py-2 text-sm focus:border-amber-500 outline-none">
+                           class="w-full bg-gray-950 border border-gray-800 text-gray-400 rounded-lg px-3 py-2 text-sm text-left focus:border-amber-500 outline-none">
                 </div>
 
                 <div class="pt-2 border-t border-gray-800 space-y-3">

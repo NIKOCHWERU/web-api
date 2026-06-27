@@ -78,10 +78,8 @@
             const theme = savedTheme || systemTheme;
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
-                document.body.classList.add('dark', 'bg-gray-900');
             } else {
                 document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark', 'bg-gray-900');
             }
         })();
     </script>
@@ -205,11 +203,13 @@
             <!-- app header end -->
             
             <div class="p-4 mx-auto max-w-7xl md:p-6">
-                <!-- Page Title -->
                 <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <h2 class="text-title-md2 font-bold text-black dark:text-white">
-                        @yield('page-title', 'Dashboard')
-                    </h2>
+                    <div class="flex items-center gap-4">
+                        <h2 class="text-title-md2 font-bold text-black dark:text-white">
+                            @yield('page-title', 'Dashboard')
+                        </h2>
+                        @yield('header-actions')
+                    </div>
 
                     <nav>
                         <ol class="flex items-center gap-2">

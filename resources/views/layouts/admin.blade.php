@@ -13,6 +13,10 @@
 
     @livewireStyles
 
+    <!-- Quill Editor (Required for Article Editor) -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
     <!-- Theme Store (TailAdmin) -->
     <script>
         document.addEventListener('alpine:init', () => {

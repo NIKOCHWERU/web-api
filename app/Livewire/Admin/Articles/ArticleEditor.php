@@ -29,8 +29,19 @@ class ArticleEditor extends Component
     public $meta_description = '';
     public $focus_keyword = '';
     public $canonical_url = '';
+    public $quillImage;
 
     public $existingImage = null;
+
+    public function saveQuillImage()
+    {
+        if ($this->quillImage) {
+            $path = $this->quillImage->store('articles/inline', 'public');
+            $this->quillImage = null; // Clear the temporary file
+            return \Illuminate\Support\Facades\Storage::url($path);
+        }
+        return null;
+    }
 
     public function mount(?Article $article = null)
     {

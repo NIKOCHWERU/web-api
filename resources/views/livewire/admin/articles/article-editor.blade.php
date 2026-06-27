@@ -461,34 +461,29 @@
                                 const file = input.files[0];
                                 if (!file) return;
 
-                                const reader = new FileReader();
-                                reader.onload = (e) => {
-                                    const img = new Image();
-                                    img.onload = () => {
-                                        const canvas = document.createElement('canvas');
-                                        let width = img.width;
-                                        let height = img.height;
-                                        const MAX_WIDTH = 1000;
-
-                                        if (width > MAX_WIDTH) {
-                                            height = Math.round((height * MAX_WIDTH) / width);
-                                            width = MAX_WIDTH;
-                                        }
-
-                                        canvas.width = width;
-                                        canvas.height = height;
-                                        const ctx = canvas.getContext('2d');
-                                        ctx.drawImage(img, 0, 0, width, height);
-
-                                        // Compress to JPEG 70% to prevent Nginx 413 error
-                                        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                                        const range = quill.getSelection(true);
-                                        quill.insertEmbed(range.index, 'image', dataUrl);
-                                        quill.setSelection(range.index + 1);
-                                    };
-                                    img.src = e.target.result;
-                                };
-                                reader.readAsDataURL(file);
+                                const wireEl = document.getElementById('quill-editor').closest('[wire\\:id]');
+                                if (wireEl) {
+                                    const component = Livewire.find(wireEl.getAttribute('wire:id'));
+                                    
+                                    // Provide visual feedback
+                                    const range = quill.getSelection(true) || { index: quill.getLength() };
+                                    quill.insertText(range.index, 'Mengunggah gambar...', 'user');
+                                    quill.setSelection(range.index + 20); // skip text
+                                    
+                                    component.upload('quillImage', file, (uploadedFilename) => {
+                                        component.call('saveQuillImage').then(url => {
+                                            // hapus teks "Mengunggah gambar..."
+                                            quill.deleteText(range.index, 20); 
+                                            if(url) {
+                                                quill.insertEmbed(range.index, 'image', url);
+                                                quill.setSelection(range.index + 1);
+                                            }
+                                        });
+                                    }, () => {
+                                        quill.deleteText(range.index, 20);
+                                        alert("Gagal mengupload gambar. Ukuran file terlalu besar (dibatasi oleh server)!");
+                                    });
+                                }
                             };
                         }
                     }

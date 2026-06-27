@@ -175,6 +175,26 @@
             };
         })();
     </script>
+
+    <!-- Desktop Window CSS (For Preview Window Control) -->
+    <style>
+        .win-window.maximized {
+            width: 100vw !important;
+            height: 100vh !important;
+            top: 0 !important;
+            left: 0 !important;
+            max-width: none !important;
+            max-height: none !important;
+            border-radius: 0 !important;
+            transform: none !important;
+        }
+        .win-window.minimized {
+            height: 32px !important;
+            min-height: 32px !important;
+            overflow: hidden !important;
+            resize: none !important;
+        }
+    </style>
 </head>
 
 <body

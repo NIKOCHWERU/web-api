@@ -258,7 +258,7 @@
             <div class="p-6 flex flex-col gap-5">
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                    <select wire:model="category_id" class="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors appearance-none">
+                    <select wire:model="category_id" class="w-full rounded-lg border border-gray-200 bg-transparent dark:bg-gray-900 px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors appearance-none">
                         <option value="">Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>

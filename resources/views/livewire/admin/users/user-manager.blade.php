@@ -142,7 +142,7 @@
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Role</label>
                     <div class="relative">
-                        <select wire:model="role" class="w-full rounded-lg border border-gray-200 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 transition-colors appearance-none">
+                        <select wire:model="role" class="w-full rounded-lg border border-gray-200 bg-transparent dark:bg-gray-900 px-4 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 transition-colors appearance-none">
                             <option value="admin">Admin</option>
                             <option value="editor">Editor</option>
                         </select>

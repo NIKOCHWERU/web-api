@@ -28,14 +28,14 @@
         </div>
         
         <div class="w-full md:w-auto flex gap-4">
-            <select wire:model.live="categoryFilter" class="rounded-lg border border-gray-200 bg-transparent py-2.5 px-4 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors appearance-none">
+            <select wire:model.live="categoryFilter" class="rounded-lg border border-gray-200 bg-transparent dark:bg-gray-900 py-2.5 px-4 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors appearance-none">
                 <option value="">All Categories</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
             
-            <select wire:model.live="statusFilter" class="rounded-lg border border-gray-200 bg-transparent py-2.5 px-4 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors appearance-none">
+            <select wire:model.live="statusFilter" class="rounded-lg border border-gray-200 bg-transparent dark:bg-gray-900 py-2.5 px-4 text-sm text-gray-800 outline-none focus:border-brand-500 dark:border-gray-800 dark:text-white/90 dark:focus:border-brand-500 transition-colors appearance-none">
                 <option value="">All Statuses</option>
                 <option value="draft">Draft</option>
                 <option value="review">Review</option>
